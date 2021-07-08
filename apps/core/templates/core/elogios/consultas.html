@@ -1,0 +1,106 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    {% bootstrap_messages %}
+
+    <form method='get' class='my-5 jumbotron p-3' autocomplete="off">
+        <h5>Consulta de elogios</h5>
+        <div class="row mx-0 mt-3">
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.data_inicial.id_for_label }}">{{ form.data_inicial.label }}</label>
+                    {{ form.data_inicial }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.data_final.id_for_label }}">{{ form.data_final.label }}</label>
+                    {{ form.data_final }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.funcionario.id_for_label }}">{{ form.funcionario.label }}</label>
+                    {{ form.funcionario }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.cargo.id_for_label }}">{{ form.cargo.label }}</label>
+                    {{ form.cargo }}
+                </div>
+            </div>
+            <div class="col-12 my-3 px-0">
+                <button type="reset" class="btn btn-secondary">
+                    Limpar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Pesquisar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {% if elogios %}
+        <div class="jumbotron p-3">
+            {% if dias %}
+                <p class="mb-3"><b>Exibindo todos os resultados para os últimos {{ dias }} dias</b></p>
+            {% elif filtros %}
+                <p class="mb-3"><b>Exibindo todos os resultados de {{ filtros.data__range.0|date:'d/m/Y' }} a {{ filtros.data__range.1|date:'d/m/Y' }}</b></p>
+            {% endif %}
+            <div class="form-inline">
+                <div class="input-group">
+                    <label for="dias">Exibir resultados para os últimos: </label>
+                    <select name="dias" id="dias" class="form-control form-control-sm ml-2">
+                        <option value="30" {% if dias == '30' %}selected{% endif %}>30 dias</option>
+                        <option value="60" {% if dias == '60' %}selected{% endif %}>60 dias</option>
+                        <option value="90" {% if dias == '90' %}selected{% endif %}>90 dias</option>
+                        <option value="120" {% if dias == '120' %}selected{% endif %}>120 dias</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-5">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ações</th>
+                        <th>Data</th>
+                        <th>Funcionário</th>
+                        <th>Cargo</th>
+                        <th>Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for elogio in elogios %}
+                    <tr>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-info btn-info-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-info-circle"></i></button>
+                                {% if usuario.administrador %}
+                                    <button class="btn btn-sm btn-danger btn-delete-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-trash"></i></button>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>{{ elogio.data|date:'d/m/Y' }}</td>
+                        <td>{{ elogio.funcionario.nome }}</td>
+                        <td>{{ elogio.funcionario.cargo }}</td>
+                        <td>{{ elogio.usuario.get_full_name }} em {{ elogio.criacao|date:'d/m/Y' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-warning mt-5">
+            Nenhum elogio cadastrado até o momento
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

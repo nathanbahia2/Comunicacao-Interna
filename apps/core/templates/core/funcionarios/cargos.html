@@ -1,0 +1,66 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <form method='post' class='my-5 jumbotron p-3' autocomplete="off">
+        <h5>Cadastro de cargos</h5>
+        {% csrf_token %}
+        <div class="row mx-0 mt-3">
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.nome.id_for_label }}">{{ form.nome.label }}</label>
+                    {{ form.nome }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.filial.id_for_label }}">{{ form.filial.label }}</label>
+                    {{ form.filial }}
+                </div>
+            </div>
+            <div class="col-12 my-3 px-0">
+                <button type="reset" class="btn btn-secondary">
+                    Limpar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Adicionar
+            </div>
+        </div>
+    </form>
+
+    {% bootstrap_messages %}
+
+    {% if cargos %}
+        <div class="table-responsive mt-5">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ações</th>
+                        <th>Cargo</th>
+                        <th>Funcionários</th>
+                        <th>Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for cargo in cargos %}
+                    <tr>
+                        <td>Ações</td>
+                        <td>{{ cargo.nome}}</td>
+                        <td>{{ cargo.funcionarios.count}}</td>
+                        <td>{{ cargo.usuario.get_full_name }} em {{ cargo.criacao|date:'d/m/Y' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-warning mt-5">
+            Nenhum cargo cadastrado até o momento
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load bootstrap4 %}
+
+<html lang="pt-br">
+    <head>
+        <title>{% block title %}Home{% endblock title %}</title>
+        <meta charset="urf-8" />
+        <meta name="viewport" content="width=device-width minimum-scale=1 maximum-scale=1"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500&display=swap" rel="stylesheet">
+        {% bootstrap_css %}
+        <style>
+            body, a, .btn, .form-control {
+                font-family: 'Poppins', sans-serif;
+                font-size: 14px !important;
+            }
+            body {
+                background-color: #DDD;
+            }
+            .jumbotron {
+                background-color: #adb5bd !important;
+            }
+            .navbar-brand {
+                font-size: 18px !important;
+            }
+        </style>
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow mb-5">
+        <a class="navbar-brand" href="{% url 'core:index' %}">Casa dos Cereais</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-warning" href="#" id="dropFuncionarios" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Funcionários
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropFuncionarios">
+                        <a class="dropdown-item" href="{% url 'core:funcionarios' %}">Funcionários</a>
+                        {% if usuario.administrador %}
+                            <a class="dropdown-item" href="{% url 'core:cargos' %}">Cargos</a>
+                            <a class="dropdown-item" href="{% url 'core:filiais' %}">Filiais</a>
+                        {% endif %}
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-warning" href="#" id="dropOcorrencias" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ocorrências
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropOcorrencias">
+                        <a class="dropdown-item" href="{% url 'core:ocorrencias' %}">Adicionar</a>
+                        <a class="dropdown-item" href="{% url 'core:consulta_ocorrencias' %}">Consultar</a>
+                        {% if usuario.administrador %}
+                            <a class="dropdown-item" href="{% url 'core:motivos' %}">Motivos</a>
+                        {% endif %}
+                    </div>
+                </li>
+                <li class="nav-item dropdown text-warning">
+                    <a class="nav-link dropdown-toggle text-warning" href="#" id="dropElogios" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Elogios
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropElogios">
+                        <a class="dropdown-item" href="{% url 'core:elogios' %}">Adicionar</a>
+                        <a class="dropdown-item" href="{% url 'core:consulta_elogios' %}">Consultar</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="{% url 'usuarios:cadastro_usuarios' %}">Relatórios</a>
+                </li>
+                {% if usuario.administrador %}
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{% url 'usuarios:cadastro_usuarios' %}">Usuários</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <div class="text-light text-sm-right">
+                <span class="text-muted">{{ usuario.filial }}</span>
+                <div>
+                    <b>{{ request.user.get_full_name }}</b>
+                    <a class='btn btn-sm ml-2' href="{% url 'usuarios:logout' %}">
+                        <i class="fas fa-power-off text-warning"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+        {% block content %} {% endblock content %}
+    </body>
+    {% bootstrap_javascript jquery="full" %}
+    {% include 'core/script.html' %}
+</html>

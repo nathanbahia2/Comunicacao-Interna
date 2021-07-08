@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    {% bootstrap_messages %}
+
+    <form method='post' class='my-5 jumbotron p-3' autocomplete="off">
+        <h5>Cadastro de usuários</h5>
+        {% csrf_token %}
+        <div class="row mx-0 mt-3">
+            <div class="col-12 col-sm-6">
+                <div class="form-group mb-2">
+                    <label for="{{ form.username.id_for_label }}">Usuário de acesso</label>
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group mb-2">
+                    <label for="{{ form.first_name.id_for_label }}">Primeiro nome</label>
+                    {{ form.first_name }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group mb-2">
+                    <label for="{{ form.last_name.id_for_label }}">Sobrenome</label>
+                    {{ form.last_name }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group mb-2">
+                    <label for="{{ form.filial.id_for_label }}">{{ form.filial.label }}</label>
+                    {{ form.filial }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group mb-2">
+                    <label for="{{ form.tipo.id_for_label }}">{{ form.tipo.label }}</label>
+                    {{ form.tipo }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group mb-2">
+                    <label for="{{ form.password.id_for_label }}">Senha</label>
+                    {{ form.password }}
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="col-12 my-3">
+                <button type="reset" class="btn btn-secondary">
+                    Limpar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Adicionar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {% if usuarios %}
+        <div class="table-responsive mt-5">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ações</th>
+                        <th>Nome</th>
+                        <th>Filial</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>Ações</td>
+                        <td>{{ usuario.usuario.get_full_name }}</td>
+                        <td>{{ usuario.filial }}</td>
+                        <td>{{ usuario.get_tipo_display }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-warning mt-5">
+            Nenhuma filial cadastrada até o momento
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

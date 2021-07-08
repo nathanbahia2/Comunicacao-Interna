@@ -1,0 +1,150 @@
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    $(function () {
+
+        const form_dias = $('#dias');
+        form_dias.on('change', function () {
+            const dias = $(this).val();
+            location.href = `${location.origin}${location.pathname}?dias=${dias}`;
+        });
+
+
+        const info_elogio = $('.btn-info-elogio');
+        info_elogio.on('click', function () {
+            const elogio = $(this).data('elogio');
+            $.get({
+                url: '/elogios/info',
+                data: {elogio: elogio},
+                success: function (data)  {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Informações do elogio',
+                        width: 800,
+                        html: `
+                            <div class="text-left">
+                                <b>Data</b>: ${data['data']} <br>
+                                <b>Funcionário</b>: ${ data['funcionario'] } <br>
+                                <b>Cargo</b>: ${ data['cargo'] } <br>
+                                <b>Observação</b>: ${ data['observacao'] } <br>
+                                <b>Cadastro</b>: ${ data['usuario'] } em ${ new Date(data['criacao']).toLocaleDateString() } <br>
+                            </div>`
+                    });
+                }
+            });
+        });
+
+
+        const info_ocorrencia = $('.btn-info-ocorrencia');
+        info_ocorrencia.on('click', function () {
+            const ocorrencia = $(this).data('ocorrencia');
+            $.get({
+                url: '/ocorrencias/info',
+                data: {ocorrencia: ocorrencia},
+                success: function (data)  {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Informações da ocorrencia',
+                        width: 800,
+                        html: `
+                            <div class="text-left">
+                                <b>Data</b>: ${data['data']} <br>
+                                <b>Funcionário</b>: ${ data['funcionario'] } <br>
+                                <b>Cargo</b>: ${ data['cargo'] } <br>
+                                <b>Motivo</b>: ${ data['motivo'] } <br>
+                                <b>Observação</b>: ${ data['observacao'] } <br>
+                                <b>Cadastro</b>: ${ data['usuario'] } em ${ new Date(data['criacao']).toLocaleDateString() } <br>
+                            </div>`
+                    });
+                }
+            });
+        });
+
+
+        const delete_elogios = $('.btn-delete-elogio');
+        delete_elogios.on('click', function () {
+            const elogio = $(this).data('elogio');
+            Swal.fire({
+                icon: 'question',
+                title: 'Excluir elogio',
+                text: 'Tem certeza que deseja excluir este elogio?',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Confirmar',
+                reverseButtons: true
+            }).then( result => {
+                if (result.value) {
+                    $.post({
+                        url: '/elogios/delete/',
+                        data: {elogio: elogio},
+                        success: function (data) {
+                            if (data) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Elogio excluído com sucesso'
+                                }).then( () => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Falha ao excluir elogio'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Falha ao excluir elogio'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+
+        const delete_ocorrencias = $('.btn-delete-ocorrencia');
+        delete_ocorrencias.on('click', function () {
+            const ocorrencia = $(this).data('ocorrencia');
+            Swal.fire({
+                icon: 'question',
+                title: 'Excluir ocorrência',
+                text: 'Tem certeza que deseja excluir esta ocorrência?',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Confirmar',
+                reverseButtons: true
+            }).then( result => {
+                if (result.value) {
+                    $.post({
+                        url: '/ocorrencias/delete/',
+                        data: {ocorrencia: ocorrencia},
+                        success: function (data) {
+                            if (data) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Ocorrência excluído com sucesso'
+                                }).then( () => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Falha ao excluir ocorrência'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Falha ao excluir ocorrência'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+</script>

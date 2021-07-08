@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    {% bootstrap_messages %}
+
+    <form method='post' class='my-5 jumbotron p-3' autocomplete="off">
+        <h5>Cadastro de ocorrência</h5>
+        {% csrf_token %}
+        <div class="row mx-0 mt-3">
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.data.id_for_label }}">{{ form.data.label }}</label>
+                    {{ form.data }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.funcionario.id_for_label }}">{{ form.funcionario.label }}</label>
+                    {{ form.funcionario }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.motivo.id_for_label }}">{{ form.motivo.label }}</label>
+                    {{ form.motivo }}
+                </div>
+            </div>
+            <div class="col-12 px-0">
+                <label for="{{ form.observacao.id_for_label }}">{{ form.observacao.label }}</label>
+                {{ form.observacao }}
+            </div>         
+            <div class="col-12 my-3 px-0">
+                <button type="reset" class="btn btn-secondary">
+                    Limpar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Adicionar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
