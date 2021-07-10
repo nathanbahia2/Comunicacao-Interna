@@ -6,7 +6,7 @@ from apps.usuarios import choices
 
 
 class Perfil(models.Model):
-    usuario = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    usuario = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='perfil')
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=3, choices=choices.TIPO_USUARIO, default='1')
 

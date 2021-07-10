@@ -1,20 +1,37 @@
-{% extends 'registration/base.html' %}
+<!DOCTYPE html>
 {% load bootstrap4 %}
 
-{% block content %}
-    <div class="conteiner">
-        <div class="row mx-0 mt-5 d-flex align-items-center">
-            <div class="col-12 col-md-4 offset-md-4 mt-5">
-                <div class="card shadow p-2">
-                    <h5 class='text-center my-3'>Acesso ao Sistema</h5>
-                    <form method='post' action='{% url "usuarios:login" %}'>
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        <button class='btn btn-primary w-100'>Entrar</button>
-                        <p class="text-muted text-center mt-2">Esqueceu a senha ou quer criar uma conta? <span class="text-info">Entre em contato com o desenvolvedor.</span></p>
-                    </form>
+<html lang='pt-br'>
+    <head>
+        <title>Login</title>
+        <meta charset='urf-8'>
+        <meta name='viewport' content='width=device-width minimum-scale=1 maximum-scale=1'>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+        {% bootstrap_css %}
+        <style>
+            body {
+                background: #DDD;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="conteiner">
+            <div class="row mx-0 d-flex align-items-center">
+                <div class="col-12 col-md-4 offset-md-4 mt-5">
+                    <div class="card shadow p-4">
+                        <div class="text-center">
+                            <img src="https://casadoscereaissupercenter.pythonanywhere.com/static/images/logo.png" alt="logo" width="250">
+                        </div>
+                        <form method='post' action='{% url "usuarios:login" %}'>
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <button class='btn btn-primary w-100'><i class="fas fa-sign-in-alt"></i> Entrar</button>
+                            <p class="text-muted text-center mt-2">Esqueceu a senha ou quer criar uma conta? <span class="text-info">Peça acesso a um administrador do sistema.</span></p>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-{% endblock content %}
+    </body>
+    {% bootstrap_javascript jquery="full" %}
+</html>

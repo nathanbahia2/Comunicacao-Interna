@@ -1,0 +1,121 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+{% if query %}
+    <div class="my-5 text-right">
+        <a href="{% url "relatorios:index" %}" class="btn btn-lg btn-secondary shadow"><i class="fas fa-arrow-left"></i> Nova consulta</a>
+        <button class="btn btn-lg btn-success shadow" id="relatorio-csv"><i class="fas fa-file-excel"></i> Exportal relatório para Excel</button>
+    </div>
+{% endif %}
+
+<h5 class="mb-3">
+    <b>Relatório: </b>{{ tipo }}
+    {% if data_inicial and data_final and tipo_relatorio != 3 %}
+        - {{ data_inicial|date:'d/m/Y' }} a {{ data_final|date:'d/m/Y' }}
+    {% endif %}
+</h5>
+
+{% if tipo_relatorio == '1' and query %}
+    <div class="table-responsive">
+        <table class="table table bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Data</th>
+                    <th>Funcionário</th>
+                    <th>Cargo</th>
+                    <th>Filial</th>
+                    <th>Motivo</th>
+                    <th>Observação</th>
+                    <th>Cadastro</th>
+                </tr>
+            </thead>
+            <tbody class="table-light">
+                {% for q in query %}
+                    <tr>
+                        <td>{{ q.data|date:'d/m/Y' }}</td>
+                        <td>{{ q.funcionario.nome }}</td>
+                        <td>{{ q.funcionario.cargo.nome }}</td>
+                        <td>{{ q.funcionario.filial }}</td>
+                        <td>{{ q.get_motivo_display }}</td>
+                        <td>{{ q.observacao }}</td>
+                        <td>{{ q.cadastro }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% elif tipo_relatorio == '2' and query %}
+    <div class="table-responsive">
+        <table class="table table bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Data</th>
+                    <th>Funcionário</th>
+                    <th>Cargo</th>
+                    <th>Filial</th>
+                    <th>Observação</th>
+                    <th>Cadastro</th>
+                </tr>
+            </thead>
+            <tbody class="table-light">
+                {% for q in query %}
+                    <tr>
+                        <td>{{ q.data|date:'d/m/Y' }}</td>
+                        <td>{{ q.funcionario.nome }}</td>
+                        <td>{{ q.funcionario.cargo.nome }}</td>
+                        <td>{{ q.funcionario.filial }}</td>
+                        <td>{{ q.observacao }}</td>
+                        <td>{{ q.cadastro }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% elif tipo_relatorio == '3' and query %}
+    <div class="table-responsive">
+        <table class="table table bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Funcionário</th>
+                    <th>Cargo</th>
+                    <th>Filial</th>
+                    <th>Admissão</th>
+                    <th>Cadastro</th>
+                </tr>
+            </thead>
+            <tbody class="table-light">
+                {% for q in query %}
+                    <tr>
+                        <td>{{ q.nome }}</td>
+                        <td>{{ q.cargo.nome }}</td>
+                        <td>{{ q.funcionario.filial }}</td>
+                        <td>{{ q.admissao|date:'d/m/Y' }}</td>
+                        <td>{{ q.cadastro }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-warning">Nenhum resultado encontrado para a busca realizada</div>
+{% endif %}
+</div>
+
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static "js/plugins/tableHTMLExport.js" %}"></script>
+    <script>
+        $('#relatorio-csv').on('click', function () {
+            $('.table').tableHTMLExport({
+                type: 'csv',
+                filename: 'report.csv'
+            });
+        });
+    </script>
+{% endblock %}

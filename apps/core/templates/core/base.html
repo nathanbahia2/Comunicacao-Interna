@@ -25,6 +25,25 @@
             .navbar-brand {
                 font-size: 18px !important;
             }
+            .text-warning {
+                color: #ecac05 !important;
+            }
+            .bg-warning,
+            .alert-warning,
+            .alert-success,
+            .alert-danger {
+                background: #ecac05 !important;
+                color: #000;
+                font-weight: bold;
+                border: none
+            }
+            .alert-success {
+                background: #28a745 !important;
+            }
+            .btn-danger,
+            .alert-danger {
+                background: #dc3545 !important;
+            }
         </style>
     </head>
     <body>
@@ -51,22 +70,9 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropFuncionarios">
                         <a class="dropdown-item" href="{% url 'core:funcionarios' %}">Funcionários</a>
+                        <a class="dropdown-item" href="{% url 'core:cargos' %}">Cargos</a>
                         {% if usuario.administrador %}
-                            <a class="dropdown-item" href="{% url 'core:cargos' %}">Cargos</a>
                             <a class="dropdown-item" href="{% url 'core:filiais' %}">Filiais</a>
-                        {% endif %}
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-warning" href="#" id="dropOcorrencias" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Ocorrências
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropOcorrencias">
-                        <a class="dropdown-item" href="{% url 'core:ocorrencias' %}">Adicionar</a>
-                        <a class="dropdown-item" href="{% url 'core:consulta_ocorrencias' %}">Consultar</a>
-                        {% if usuario.administrador %}
-                            <a class="dropdown-item" href="{% url 'core:motivos' %}">Motivos</a>
                         {% endif %}
                     </div>
                 </li>
@@ -80,28 +86,40 @@
                         <a class="dropdown-item" href="{% url 'core:consulta_elogios' %}">Consultar</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-warning" href="#" id="dropOcorrencias" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ocorrências
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropOcorrencias">
+                        <a class="dropdown-item" href="{% url 'core:ocorrencias' %}">Adicionar</a>
+                        <a class="dropdown-item" href="{% url 'core:consulta_ocorrencias' %}">Consultar</a>
+                        <a class="dropdown-item" href="{% url 'core:motivos' %}">Motivos</a>
+                    </div>
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link text-warning" href="{% url 'usuarios:cadastro_usuarios' %}">Relatórios</a>
+                    <a class="nav-link text-warning" href="{% url "relatorios:index" %}">Relatórios</a>
                 </li>
                 {% if usuario.administrador %}
                     <li class="nav-item">
-                        <a class="nav-link text-warning" href="{% url 'usuarios:cadastro_usuarios' %}">Usuários</a>
+                        <a class="nav-link text-warning" href="{% url 'usuarios:usuarios' %}">Usuários</a>
                     </li>
                 {% endif %}
             </ul>
             <div class="text-light text-sm-right">
-                <span class="text-muted">{{ usuario.filial }}</span>
+                <span class="text-muted">{{ usuario.filial|upper }}</span>
                 <div>
-                    <b>{{ request.user.get_full_name }}</b>
-                    <a class='btn btn-sm ml-2' href="{% url 'usuarios:logout' %}">
+                    <b>{{ request.user.get_full_name|upper }}</b>
+                    <a class='btn btn-sm ml-2' href="{% url 'usuarios:logout' %}" data-toggle="tooltip" title="Sair do sistema">
                         <i class="fas fa-power-off text-warning"></i>
                     </a>
                 </div>
             </div>
         </div>
     </nav>
-        {% block content %} {% endblock content %}
+    {% block content %} {% endblock %}
     </body>
     {% bootstrap_javascript jquery="full" %}
     {% include 'core/script.html' %}
+    {% block script %}{% endblock %}
 </html>

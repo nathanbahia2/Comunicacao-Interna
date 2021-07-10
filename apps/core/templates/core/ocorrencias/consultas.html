@@ -40,12 +40,18 @@
                     {{ form.motivo }}
                 </div>
             </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.filial.id_for_label }}">{{ form.filial.label }}</label>
+                    {{ form.filial }}
+                </div>
+            </div>
             <div class="col-12 my-3 px-0">
                 <button type="reset" class="btn btn-secondary">
-                    Limpar
+                    <i class="fas fa-eraser"></i> Limpar
                 </button>
                 <button type="submit" class="btn btn-primary">
-                    Pesquisar
+                    <i class="fas fa-search"></i> Pesquisar
                 </button>
             </div>
         </div>
@@ -71,7 +77,6 @@
             </div>
         </div>
 
-
         <div class="table-responsive mt-5">
             <table class="table table-bordered text-center">
                 <thead class="table-dark">
@@ -79,6 +84,10 @@
                         <th>Ações</th>
                         <th>Data</th>
                         <th>Funcionário</th>
+                        <th>Cargo</th>
+                        {% if usuario.administrador %}
+                            <th>Filial</th>
+                        {% endif %}
                         <th>Motivo</th>
                         <th>Cadastro</th>
                     </tr>
@@ -89,6 +98,7 @@
                         <td>
                             <div class="btn-group">
                                 <button class="btn btn-sm btn-info btn-info-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}"><i class="fas fa-info-circle"></i></button>
+                                <a href="{% url 'core:edit_ocorrencias' ocorrencia.id %}" class="btn btn-sm btn-dark btn-edit-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}"><i class="fas fa-edit"></i></a>
                                 {% if usuario.administrador %}
                                     <button class="btn btn-sm btn-danger btn-delete-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}"><i class="fas fa-trash"></i></button>
                                 {% endif %}
@@ -96,16 +106,24 @@
                         </td>
                         <td>{{ ocorrencia.data|date:'d/m/Y' }}</td>
                         <td>{{ ocorrencia.funcionario.nome }}</td>
-                        <td>{{ ocorrencia.motivo }}</td>
-                        <td>{{ ocorrencia.usuario.get_full_name }} em {{ ocorrencia.criacao|date:'d/m/Y' }}</td>
+                        <td>{{ ocorrencia.funcionario.cargo.nome }}</td>
+                        {% if usuario.administrador %}
+                            <td>{{ ocorrencia.funcionario.filial }}</td>
+                        {% endif %}
+                        <td>{{ ocorrencia.get_motivo_display }}</td>
+                        <td>{{ ocorrencia.cadastro }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        {% else %}
+    {% else %}
         <div class="alert alert-warning mt-5">
-            Nenhuma ocorrência cadastrada até o momento
+            {% if consulta %}
+                Nenhuma ocorrência encontrada
+            {% else %}
+                Nenhuma ocorrência cadastrada até o momento
+            {% endif %}
         </div>
     {% endif %}
 </div>

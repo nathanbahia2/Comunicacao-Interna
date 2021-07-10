@@ -52,10 +52,12 @@ class CargoForm(forms.ModelForm):
         model = models.Cargo
         fields = ['nome', 'filial']
 
-    def __init__(self, filial, *args, **kwargs):
+    def __init__(self, usuario, *args, **kwargs):
         super(CargoForm, self).__init__(*args, **kwargs)
-        self.fields['filial'].queryset = models.Filial.objects.filter(id=filial.id)
-        self.fields['filial'].initial = filial
+
+        if usuario.tipo == '1':
+            self.fields['filial'].queryset = models.Filial.objects.filter(id=usuario.filial.id)
+            self.fields['filial'].initial = usuario.filial
 
 
 class FuncionarioForm(forms.ModelForm):
@@ -101,11 +103,13 @@ class FuncionarioForm(forms.ModelForm):
         model = models.Funcionario
         fields = ['nome', 'admissao', 'cargo', 'filial']
 
-    def __init__(self, filial, *args, **kwargs):
+    def __init__(self, usuario, *args, **kwargs):
         super(FuncionarioForm, self).__init__(*args, **kwargs)
-        self.fields['cargo'].queryset = models.Cargo.objects.filter(filial_id=filial.id)
-        self.fields['filial'].queryset = models.Filial.objects.filter(id=filial.id)
-        self.fields['filial'].initial = filial
+
+        if usuario.tipo == '1':
+            self.fields['cargo'].queryset = models.Cargo.objects.filter(filial_id=usuario.filial.id)
+            self.fields['filial'].queryset = models.Filial.objects.filter(id=usuario.filial.id)
+            self.fields['filial'].initial = usuario.filial
 
 
 class MotivoForm(forms.ModelForm):
@@ -118,6 +122,7 @@ class MotivoForm(forms.ModelForm):
             }
         )
     )
+
     filial = forms.ModelChoiceField(
         queryset=models.Filial.objects.all(),
         widget=forms.Select(
@@ -132,10 +137,12 @@ class MotivoForm(forms.ModelForm):
         model = models.Motivo
         fields = ['nome', 'filial']
 
-    def __init__(self, filial, *args, **kwargs):
+    def __init__(self, usuario, *args, **kwargs):
         super(MotivoForm, self).__init__(*args, **kwargs)
-        self.fields['filial'].queryset = models.Filial.objects.filter(id=filial.id)
-        self.fields['filial'].initial = filial
+
+        if usuario.tipo == '1':
+            self.fields['filial'].queryset = models.Filial.objects.filter(id=usuario.filial.id)
+            self.fields['filial'].initial = usuario.filial
 
 
 class OcorrenciaForm(forms.ModelForm):
@@ -185,10 +192,12 @@ class OcorrenciaForm(forms.ModelForm):
         model = models.Ocorrencia
         fields = ['data', 'motivo', 'funcionario', 'observacao']
 
-    def __init__(self, filial, *args, **kwargs):
+    def __init__(self, usuario, *args, **kwargs):
         super(OcorrenciaForm, self).__init__(*args, **kwargs)
-        self.fields['motivo'].queryset = models.Motivo.objects.filter(filial_id=filial.id)
-        self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=filial.id)
+
+        if usuario.tipo == '1':
+            self.fields['motivo'].queryset = models.Motivo.objects.filter(filial_id=usuario.filial.id)
+            self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=usuario.filial.id)
 
 
 class ConsultaOcorrenciaForm(forms.Form):
@@ -247,11 +256,25 @@ class ConsultaOcorrenciaForm(forms.Form):
         )
     )
 
-    def __init__(self, filial, *args, **kwargs):
+    filial = forms.ModelChoiceField(
+        queryset=models.Filial.objects.all(),
+        required=False,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+
+    def __init__(self, usuario, *args, **kwargs):
         super(ConsultaOcorrenciaForm, self).__init__(*args, **kwargs)
-        self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=filial.id)
-        self.fields['cargo'].queryset = models.Cargo.objects.filter(filial_id=filial.id)
-        self.fields['motivo'].queryset = models.Motivo.objects.filter(filial_id=filial.id)
+
+        if usuario.tipo == '1':
+            self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=usuario.filial.id)
+            self.fields['cargo'].queryset = models.Cargo.objects.filter(filial_id=usuario.filial.id)
+            self.fields['motivo'].queryset = models.Motivo.objects.filter(filial_id=usuario.filial.id)
+
+            del self.fields['filial']
 
 
 class ElogioForm(forms.ModelForm):
@@ -290,9 +313,11 @@ class ElogioForm(forms.ModelForm):
         model = models.Elogio
         fields = ['data', 'funcionario', 'observacao']
 
-    def __init__(self, filial, *args, **kwargs):
+    def __init__(self, usuario, *args, **kwargs):
         super(ElogioForm, self).__init__(*args, **kwargs)
-        self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=filial.id)
+
+        if usuario.tipo == '1':
+            self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=usuario.filial.id)
 
 
 class ConsultaElogioForm(forms.Form):
@@ -340,7 +365,21 @@ class ConsultaElogioForm(forms.Form):
         )
     )
 
-    def __init__(self, filial, *args, **kwargs):
+    filial = forms.ModelChoiceField(
+        queryset=models.Filial.objects.all(),
+        required=False,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+
+    def __init__(self, usuario, *args, **kwargs):
         super(ConsultaElogioForm, self).__init__(*args, **kwargs)
-        self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=filial.id)
-        self.fields['cargo'].queryset = models.Cargo.objects.filter(filial_id=filial.id)
+
+        if usuario.tipo == '1':
+            self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=usuario.filial.id)
+            self.fields['cargo'].queryset = models.Cargo.objects.filter(filial_id=usuario.filial.id)
+
+            del self.fields['filial']

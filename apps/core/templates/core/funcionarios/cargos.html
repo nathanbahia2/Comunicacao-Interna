@@ -5,8 +5,15 @@
 
 <div class="container-fluid">
 
+    {% bootstrap_messages %}
+
     <form method='post' class='my-5 jumbotron p-3' autocomplete="off">
-        <h5>Cadastro de cargos</h5>
+        {% if instance %}
+            <h5>Editar cargo</h5>
+        {% else %}
+            <h5>Cadastro de cargos</h5>
+        {% endif %}
+
         {% csrf_token %}
         <div class="row mx-0 mt-3">
             <div class="col-12 col-sm-6 px-0 pr-sm-3">
@@ -22,44 +29,68 @@
                 </div>
             </div>
             <div class="col-12 my-3 px-0">
-                <button type="reset" class="btn btn-secondary">
-                    Limpar
-                </button>
+                {% if instance %}
+                    <a href="{% url "core:cargos" %}" type="reset" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                {% else %}
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> Limpar
+                    </button>
+                {% endif %}
                 <button type="submit" class="btn btn-primary">
-                    Adicionar
+                    <i class="fas fa-save"></i> Salvar
+                </button>
             </div>
         </div>
     </form>
 
-    {% bootstrap_messages %}
-
-    {% if cargos %}
-        <div class="table-responsive mt-5">
-            <table class="table table-bordered text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Ações</th>
-                        <th>Cargo</th>
-                        <th>Funcionários</th>
-                        <th>Cadastro</th>
-                    </tr>
-                </thead>
-                <tbody class="table-light">
-                    {% for cargo in cargos %}
-                    <tr>
-                        <td>Ações</td>
-                        <td>{{ cargo.nome}}</td>
-                        <td>{{ cargo.funcionarios.count}}</td>
-                        <td>{{ cargo.usuario.get_full_name }} em {{ cargo.criacao|date:'d/m/Y' }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <div class="alert alert-warning mt-5">
-            Nenhum cargo cadastrado até o momento
-        </div>
+    {% if not instance %}
+        {% if cargos %}
+            <div class="table-responsive mt-5">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Ações</th>
+                            <th>Cargo</th>
+                            {% if usuario.administrador %}
+                                <th>Filial</th>
+                            {% endif %}
+                            <th>Funcionários</th>
+                            <th>Cadastro</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                        {% for cargo in cargos %}
+                        <tr>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{% url 'core:edit_cargos' cargo.id %}" class="btn btn-sm btn-dark btn-edit-cargo" data-cargo="{{ cargo.id }}" data-toggle="tooltip" title="Editar cargo">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    {% if usuario.administrador %}
+                                        <button class="btn btn-sm btn-danger btn-delete-cargo" data-cargo="{{ cargo.id }}" data-toggle="tooltip" title="Excluir cargo">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>{{ cargo.nome}}</td>
+                            {% if usuario.administrador %}
+                                <td>{{ cargo.filial }}</td>
+                            {% endif %}
+                            <td>{{ cargo.funcionarios.count}}</td>
+                            <td>{{ cargo.cadastro }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-warning mt-5">
+                Nenhum cargo cadastrado até o momento
+            </div>
+        {% endif %}
     {% endif %}
 </div>
 

@@ -8,8 +8,14 @@
     {% bootstrap_messages %}
 
     <form method='post' class='my-5 jumbotron p-3' autocomplete="off">
-        <h5>Cadastro de elogios</h5>
+        {% if instance %}
+            <h5>Editar elogio</h5>
+        {% else %}
+            <h5>Cadastro de elogios</h5>
+        {% endif %}
+
         {% csrf_token %}
+
         <div class="row mx-0 mt-3">
             <div class="col-12 col-sm-6 px-0 pr-sm-3">
                 <div class="form-group mb-2">
@@ -28,11 +34,17 @@
                 {{ form.observacao }}
             </div>         
             <div class="col-12 my-3 px-0">
-                <button type="reset" class="btn btn-secondary">
-                    Limpar
-                </button>
+                {% if instance %}
+                    <a href="{% url "core:consulta_elogios" %}" type="reset" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                {% else %}
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> Limpar
+                    </button>
+                {% endif %}
                 <button type="submit" class="btn btn-primary">
-                    Adicionar
+                    <i class="fas fa-save"></i> Salvar
                 </button>
             </div>
         </div>

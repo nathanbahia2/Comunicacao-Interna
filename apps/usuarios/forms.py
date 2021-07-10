@@ -100,3 +100,55 @@ class UsuarioForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'filial', 'tipo', 'password']
+
+    def __init__(self, *args, **kwargs):
+        super(UsuarioForm, self).__init__(*args, **kwargs)
+        if kwargs.get('instance'):
+            del self.fields['password']
+
+
+class UsuarioEditForm(forms.ModelForm):
+    first_name = forms.CharField(
+        label='Nome',
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
+    last_name = forms.CharField(
+        label='Sobrenome',
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
+    filial = forms.ModelChoiceField(
+        label='Selecione a filial do usuário',
+        queryset=models.Filial.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
+    tipo = forms.CharField(
+        label='Tipo de usuário',
+        required=True,
+        widget=forms.Select(
+            choices=choices.TIPO_USUARIO,
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'filial', 'tipo']

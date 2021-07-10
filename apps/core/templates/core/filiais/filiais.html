@@ -25,10 +25,10 @@
             </div>             
             <div class="col-12 my-3 px-0">
                 <button type="reset" class="btn btn-secondary">
-                    Limpar
+                    <i class="fas fa-eraser"></i> Limpar
                 </button>
                 <button type="submit" class="btn btn-primary">
-                    Adicionar
+                    <i class="fas fa-save"></i> Salvar
                 </button>
             </div>
         </div>
@@ -39,7 +39,6 @@
             <table class="table table-bordered text-center">
                 <thead class="table-dark">
                     <tr>
-                        <th>Ações</th>
                         <th>Nome</th>
                         <th>Cidade</th>
                         <th>Funcionários</th>
@@ -49,11 +48,10 @@
                 <tbody class="table-light">
                     {% for filial in filiais %}
                     <tr>
-                        <td>Ações</td>
                         <td>{{ filial.nome }}</td>
                         <td>{{ filial.cidade }}</td>
                         <td>{{ filial.funcionarios.count }}</td>
-                        <td>{{ filial.usuario.get_full_name }} em {{ filial.criacao|date:'d/m/Y' }}</td>
+                        <td>{{ filial.cadastro }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

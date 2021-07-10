@@ -5,9 +5,11 @@ from apps.usuarios import views
 
 
 urlpatterns = [
-    path('login/', views.login, name='login-form'),
-    path('cadastro_usuarios/', views.cadastro_usuarios, name='cadastro_usuarios'),
+    path('add/', views.usuarios, name='usuarios'),
+    path('edit/<int:pk>/', views.usuarios, name='edit_usuarios'),
+    path('delete/', views.delete_usuarios, name='delete_usuarios'),
 
+    path('login/', views.login, name='login-form'),
     path('login-validation/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 ]

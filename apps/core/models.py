@@ -11,6 +11,12 @@ class Base(models.Model):
     class Meta:
         abstract = True
 
+    @property
+    def cadastro(self):
+        if self.usuario:
+            return f"{self.usuario.get_full_name()} em {self.criacao.strftime('%d/%m/%Y')}"
+        return f"Usuário excluído em {self.criacao.strftime('%d/%m/%Y')}"
+
 
 class Filial(Base):
     nome = models.CharField(max_length=255)
@@ -28,7 +34,7 @@ class Cargo(Base):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nome
+        return f'{self.nome} - {self.filial}'
 
     class Meta:
         ordering = ['nome']
@@ -52,7 +58,7 @@ class Motivo(Base):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nome
+        return f'{self.nome} - {self.filial}'
 
     class Meta:
         ordering = ['nome']
@@ -65,10 +71,22 @@ class Ocorrencia(Base):
     observacao = models.TextField()
 
     def __str__(self):
-        return self.funcionario.nome
+        return self.observacao or '---------'
 
     class Meta:
         ordering = ['data']
+
+    @property
+    def get_motivo_display(self):
+        if self.motivo:
+            return self.motivo.nome
+        return 'Motivo excluído'
+
+    @property
+    def get_usuario_display(self):
+        if self.usuario:
+            return self.usuario.get_full_name()
+        return 'Usuário excluído'
 
 
 class Elogio(Base):

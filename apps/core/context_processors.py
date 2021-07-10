@@ -2,7 +2,7 @@ def usuario(request):
     if not request.user.is_authenticated:
         return {}
 
-    perfil = request.user.perfil_set.last()
+    perfil = request.user.perfil.latest('id')
     context = {'usuario': {}}
 
     if perfil:
