@@ -31,7 +31,6 @@ def index(request):
 
 
 @login_required
-@require_POST
 def gerar(request):
     usuario = request.user.perfil.latest('id')
     form = forms.RelatorioForm(data=request.POST)
