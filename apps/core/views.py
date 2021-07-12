@@ -7,7 +7,7 @@ from django.http.response import JsonResponse
 from django.contrib import messages
 from django.core import serializers
 
-from apps.core import forms, utils
+from apps.core import forms, utils, send_email
 from apps.core import models
 
 
@@ -219,6 +219,7 @@ def ocorrencias(request, pk=None):
             messages.success(request, msg_sucesso)
 
             if not instance:
+                send_email.send_ocorrencia(obj)
                 return redirect('core:ocorrencias')
 
             else:
@@ -343,6 +344,7 @@ def elogios(request, pk=None):
             messages.success(request, msg_sucesso)
 
             if not instance:
+                send_email.send_elogio(obj)
                 return redirect('core:elogios')
 
             else:
