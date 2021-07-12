@@ -1,5 +1,6 @@
 asgiref==3.4.1
 beautifulsoup4==4.9.3
+coverage==5.5
 Django==3.2.5
 django-bootstrap4==3.0.1
 python-decouple==3.4

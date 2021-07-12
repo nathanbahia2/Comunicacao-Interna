@@ -5,3 +5,5 @@ db.sqlite3
 .idea
 .vscode
 *__pycache__
+.coverage
+htmlcov
