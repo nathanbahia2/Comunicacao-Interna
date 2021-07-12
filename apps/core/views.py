@@ -158,7 +158,6 @@ def motivos(request, pk=None):
 
     if request.method == 'POST':
         form = forms.MotivoForm(
-            filial=usuario.filial,
             usuario=usuario,
             data=request.POST,
             instance=instance
@@ -437,7 +436,6 @@ def info_elogios(request):
 @require_POST
 @csrf_exempt
 def delete_model_object(request):
-    response = False
     msg_sucesso = request.POST.get('msg_sucesso')
     msg_erro = request.POST.get('msg_erro')
 
@@ -451,6 +449,7 @@ def delete_model_object(request):
             'funcionarios': models.Funcionario,
             'cargos': models.Cargo,
             'motivos': models.Motivo,
+            'email': models.EmailResponsaveis,
             'usuarios': User
         }[model_name]
 
@@ -458,16 +457,11 @@ def delete_model_object(request):
         obj.delete()
 
         response = True
-
-        messages.success(
-            request,
-            msg_sucesso
-        )
+        messages.success(request, msg_sucesso)
 
     except Exception as e:
-        messages.error(
-            request,
-            f'{msg_erro}: {e}')
+        response = False
+        messages.error(request, f'{msg_erro}: {e}')
 
     return JsonResponse(response, safe=False)
 
@@ -482,3 +476,59 @@ def altera_filial(request):
     usuario.save()
 
     return redirect(path)
+
+
+@login_required
+def emails(request, pk=None):
+    instance = None
+    msg_sucesso = 'E-mail cadastrado com sucesso'
+    msg_erro = 'Falha ao cadastrar e-mail'
+
+    if pk:
+        instance = models.EmailResponsaveis.objects.get(pk=pk)
+        msg_sucesso = 'E-mail editado com sucesso'
+        msg_erro = 'Falha ao editar e-mail'
+
+    form = forms.EmailResponsaveisForm(
+        instance=instance
+    )
+
+    if request.method == 'POST':
+        form = forms.EmailResponsaveisForm(
+            data=request.POST,
+            instance=instance
+        )
+
+        if form.is_valid():
+            email = form.save(commit=False)
+            email.usuario = request.user
+            email.save()
+
+            email.filiais.clear()
+
+            filiais_post = request.POST.getlist('filiais')
+            for f in filiais_post:
+                email.filiais.add(f)
+            email.save()
+
+            messages.success(request, msg_sucesso)
+
+            if not instance:
+                return redirect('core:emails')
+
+            else:
+                return redirect('core:edit_emails', pk)
+
+        else:
+            messages.error(request, msg_erro)
+
+    query = None
+    if not instance:
+        query = models.EmailResponsaveis.objects.all()
+
+    context = {
+        'form': form,
+        'emails': query,
+        'instance': instance
+    }
+    return render(request, 'core/emails/emails.html', context)

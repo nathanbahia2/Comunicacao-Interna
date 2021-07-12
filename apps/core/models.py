@@ -34,7 +34,7 @@ class Cargo(Base):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.nome} - {self.filial}'
+        return f'{self.nome}'
 
     class Meta:
         ordering = ['nome']
@@ -47,7 +47,7 @@ class Funcionario(Base):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE, related_name='funcionarios')
 
     def __str__(self):
-        return f'{self.nome} - {self.cargo} - {self.filial}'
+        return f'{self.nome} - {self.cargo}'
 
     class Meta:
         ordering = ['nome']
@@ -58,7 +58,7 @@ class Motivo(Base):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.nome} - {self.filial}'
+        return f'{self.nome}'
 
     class Meta:
         ordering = ['nome']
@@ -96,3 +96,12 @@ class Elogio(Base):
 
     def __str__(self):
         return self.funcionario.nome
+
+
+class EmailResponsaveis(Base):
+    nome = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    filiais = models.ManyToManyField(Filial, null=True)
+
+    def __str__(self):
+        return self.nome

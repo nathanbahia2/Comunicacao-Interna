@@ -352,3 +352,40 @@ class ConsultaElogioForm(forms.Form):
 
         self.fields['funcionario'].queryset = models.Funcionario.objects.filter(filial_id=usuario.filial.id)
         self.fields['cargo'].queryset = models.Cargo.objects.filter(filial_id=usuario.filial.id)
+
+
+class EmailResponsaveisForm(forms.ModelForm):
+    nome = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Nome do responsável',
+                'required': True
+            }
+        )
+    )
+
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'E-mail do responsável',
+                'required': True
+            }
+        )
+    )
+
+    filiais = forms.ModelMultipleChoiceField(
+        label='Selecione todas as filiais que desejar enviar as atualizações ao responsável',
+        queryset=models.Filial.objects.all(),
+        widget=forms.SelectMultiple(
+            attrs={
+                'class': 'form-control',
+                'required': True
+            }
+        )
+    )
+
+    class Meta:
+        model = models.EmailResponsaveis
+        fields = ['nome', 'email', 'filiais']

@@ -11,6 +11,9 @@ urlpatterns = [
 
     path('filiais', views.filiais, name='filiais'),
 
+    path('emails', views.emails, name='emails'),
+    path('emails/edit/<int:pk>/', views.emails, name='edit_emails'),
+
     path('motivos', views.motivos, name='motivos'),
     path('motivos/edit/<int:pk>/', views.motivos, name='edit_motivos'),
 

@@ -102,6 +102,20 @@
     });
 
 
+    $('.btn-delete-email').on('click', function () {
+        const id = $(this).data("email");
+        deleteObj({
+            id: id,
+            title: "Excluir e-mail",
+            text: "Tem certeza que deseja excluir este e-mail?",
+            url: "/delete/obj/",
+            model: 'email',
+            msgSuccess: "E-mail excluído com sucesso",
+            msgError: "Falha ao excluir e-mail"
+        });
+    });
+
+
     $('.btn-delete-funcionario').on('click', function () {
         const id = $(this).data("funcionario");
         deleteObj({

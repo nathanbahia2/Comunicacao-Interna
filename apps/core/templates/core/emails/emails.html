@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    {% bootstrap_messages %}
+
+    <form method='post' class='my-5 jumbotron p-3' autocomplete="off">
+        {% if instance %}
+            <h5>Editar e-mail</h5>
+        {% else %}
+            <h5>Cadastro de e-mails</h5>
+        {% endif %}
+        {% csrf_token %}
+        <div class="row mx-0 mt-3">
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.nome.id_for_label }}">{{ form.nome.label }}</label>
+                    {{ form.nome }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="col-12 px-0">
+                <div class="form-group mb-2">
+                    <label for="{{ form.filiais.id_for_label }}">{{ form.filiais.label }}</label>
+                    {{ form.filiais }}
+                </div>
+            </div>
+            <div class="col-12 my-3 px-0">
+                <button type="reset" class="btn btn-secondary">
+                    <i class="fas fa-eraser"></i> Limpar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {% if not instance %}
+        {% if emails %}
+            <div class="table-responsive mt-5">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Ações</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Filiais</th>
+                            <th>Cadastro</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                        {% for email in emails %}
+                            <tr>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{% url 'core:edit_emails' email.id %}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Editar e-mail"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-danger btn-delete-email" data-email="{{ email.id }}" data-toggle="tooltip" title="Excluir e-mail"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                                <td>{{ email.nome }}</td>
+                                <td>{{ email.email }}</td>
+                                <td>{{ email.filiais.all|join:'<br>'|safe }}</td>
+                                <td>{{ email.cadastro }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-warning mt-5">
+                Nenhum e-mail cadastrado até o momento
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% endblock content %}
