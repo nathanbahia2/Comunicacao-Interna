@@ -101,7 +101,7 @@ class Elogio(Base):
 class EmailResponsaveis(Base):
     nome = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    filiais = models.ManyToManyField(Filial, null=True)
+    filiais = models.ManyToManyField(Filial)
 
     def __str__(self):
         return self.nome

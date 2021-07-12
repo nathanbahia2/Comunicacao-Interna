@@ -32,15 +32,15 @@
             <div class="col-12 my-3 px-0">
                 {% if instance %}
                     <a href="{% url "core:motivos" %}" type="reset" class="btn btn-secondary">
-                        Cancelar
+                        <i class="fas fa-arrow-left"></i> Cancelar
                     </a>
                 {% else %}
                     <button type="reset" class="btn btn-secondary">
-                        Limpar
+                        <i class="fas fa-eraser"></i> Limpar
                     </button>
                 {% endif %}
                 <button type="submit" class="btn btn-primary">
-                    Salvar
+                    <i class="fas fa-save"></i> Salvar
                 </button>
             </div>
         </div>

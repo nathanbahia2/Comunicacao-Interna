@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b*(ont-dvzmumhlbca$=!8-z8ym9_g8l(%3x$3dwot(1ss0)jl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config('DEBUG', cast=bool, default=True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -89,7 +91,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+if DEBUG is False:
+    DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -143,10 +146,8 @@ LOGIN_URL = '/users/login/'
 LOGOUT_REDIRECT_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/'
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'casadoscereais.comunicacao@gmail.com'
-EMAIL_HOST_PASSWORD = '33532177cc'
-EMAIL_PORT = 587
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT')

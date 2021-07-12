@@ -5,8 +5,8 @@ def usuario(request):
     if not request.user.is_authenticated:
         return {}
 
-    perfil = request.user.perfil.latest('id')
     context = {'usuario': {}}
+    perfil = request.user.perfil.order_by('id').last()
 
     if perfil:
         context['usuario']['filial'] = perfil.filial

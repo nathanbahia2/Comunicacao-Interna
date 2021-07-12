@@ -33,7 +33,11 @@ def send_ocorrencia(ocorrencia):
             to=emails
         )
         msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        try:
+            msg.send()
+
+        except Exception as e:
+            print(e)
 
 
 def send_elogio(elogio):
@@ -66,4 +70,8 @@ def send_elogio(elogio):
             to=emails
         )
         msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        try:
+            msg.send()
+
+        except Exception as e:
+            print(e)
