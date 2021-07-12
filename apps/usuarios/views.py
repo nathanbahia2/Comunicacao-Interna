@@ -81,7 +81,10 @@ def usuarios(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Perfil.objects.order_by('usuario__first_name')
+        query = models.Perfil.objects.filter(
+            filial=usuario.filial,
+            tipo='1'
+        ).exclude(id=usuario.usuario.id).order_by('usuario__first_name')
 
     context = {
         'form': form,
@@ -109,5 +112,25 @@ def delete_usuarios(request):
 
     except Exception as e:
         messages.error(request, f'Falha ao excluir usuário: {e}')
+
+    return JsonResponse(response, safe=False)
+
+
+@login_required
+@csrf_exempt
+def change_password(request):
+    try:
+        usuario_id = request.POST.get('usuario')
+        usuario = User.objects.get(pk=usuario_id)
+        password = request.POST.get('password')
+
+        usuario.set_password(password)
+        usuario.save()
+
+        response = True
+
+    except Exception as e:
+        print(e)
+        response = False
 
     return JsonResponse(response, safe=False)

@@ -54,10 +54,7 @@ def cargos(request, pk=None):
 
     query = None
     if not instance:
-        if usuario.tipo == '1':
-            query = models.Cargo.objects.filter(filial=usuario.filial)
-        else:
-            query = models.Cargo.objects.all()
+        query = models.Cargo.objects.filter(filial=usuario.filial)
 
     context = {
         'form': form,
@@ -131,10 +128,7 @@ def funcionarios(request, pk=None):
 
     query = None
     if not instance:
-        if usuario.tipo == '1':
-            query = models.Funcionario.objects.filter(filial=usuario.filial)
-        else:
-            query = models.Funcionario.objects.all()
+        query = models.Funcionario.objects.filter(filial=usuario.filial)
 
     context = {
         'form': form,
@@ -182,10 +176,7 @@ def motivos(request, pk=None):
 
     query = None
     if not instance:
-        if usuario.tipo == '1':
-            query = models.Motivo.objects.filter(filial=usuario.filial)
-        else:
-            query = models.Motivo.objects.all()
+        query = models.Motivo.objects.filter(filial=usuario.filial)
 
     context = {
         'form': form,
@@ -239,10 +230,7 @@ def ocorrencias(request, pk=None):
 
     query = None
     if not instance:
-        if usuario.tipo == '1':
-            query = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial)
-        else:
-            query = models.Ocorrencia.objects.all()
+        query = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial)
 
     context = {
         'form': form,
@@ -263,11 +251,8 @@ def consulta_ocorrencias(request):
 
     filtros = {
         'data__range': data_range,
-        'ativo': True
+        'funcionario__filial': usuario.filial
     }
-
-    if usuario.tipo == '1':
-        filtros['funcionario__filial'] = usuario.filial
 
     query = models.Ocorrencia.objects.filter(**filtros).order_by('funcionario')
 
@@ -282,14 +267,10 @@ def consulta_ocorrencias(request):
         funcionario = form.cleaned_data.get('funcionario')
         cargo = form.cleaned_data.get('cargo')
         motivo = form.cleaned_data.get('motivo')
-        filial = form.cleaned_data.get('filial')
 
         if data_final and data_inicial:
             dias = None
             filtros['data__range'] = [data_inicial, data_final]
-
-        if filial:
-            filtros['funcionario__filial'] = filial
 
         if funcionario:
             filtros['funcionario'] = funcionario
@@ -373,9 +354,7 @@ def elogios(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Elogio.objects.filter(
-            funcionario__filial=usuario.filial
-        ).order_by('funcionario')
+        query = models.Elogio.objects.filter(funcionario__filial=usuario.filial)
 
     context = {
         'form': form,
@@ -396,11 +375,8 @@ def consulta_elogios(request):
 
     filtros = {
         'data__range': data_range,
-        'ativo': True
+        'funcionario__filial': usuario.filial
     }
-
-    if usuario.tipo == '1':
-        filtros['funcionario__filial'] = usuario.filial
 
     query = models.Elogio.objects.filter(**filtros).order_by('funcionario')
 
@@ -494,3 +470,15 @@ def delete_model_object(request):
             f'{msg_erro}: {e}')
 
     return JsonResponse(response, safe=False)
+
+
+@login_required
+def altera_filial(request):
+    filial_id = request.POST.get('filial')
+    path = request.POST.get('path')
+
+    usuario = request.user.perfil.latest('id')
+    usuario.filial_id = filial_id
+    usuario.save()
+
+    return redirect(path)

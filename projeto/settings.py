@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.core.apps.CoreConfig',
     'apps.usuarios.apps.UsuariosConfig',
     'apps.relatorios.apps.RelatoriosConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apps.core.context_processors.usuario'
+                'apps.core.context_processors.usuario',
             ],
         },
     },

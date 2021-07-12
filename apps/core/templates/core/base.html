@@ -106,14 +106,26 @@
                     </li>
                 {% endif %}
             </ul>
-            <div class="text-light text-sm-right">
-                <span class="text-muted">{{ usuario.filial|upper }}</span>
-                <div>
-                    <b>{{ request.user.get_full_name|upper }}</b>
-                    <a class='btn btn-sm ml-2' href="{% url 'usuarios:logout' %}" data-toggle="tooltip" title="Sair do sistema">
-                        <i class="fas fa-power-off text-warning"></i>
-                    </a>
+            {% if usuario.administrador %}
+                <div class="mr-sm-5">
+                    <form action="{% url "core:altera_filial" %}" method="post" id="formFilial">
+                        {% csrf_token %}
+                        <div class="form group">
+                            <input type="hidden" name="path" value="{{ request.get_full_path }}">
+                            <select name="filial" id="" class="form-control bg-dark border boder-light text-warning" onchange="$('#formFilial').submit()">
+                                {% for filial in usuario.filiais %}
+                                    <option value="{{ filial.id }}" {% if usuario.filial == filial %}selected{% endif %}>{{ filial }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
                 </div>
+            {% endif %}
+            <div class="text-light text-sm-right">
+                <b>{{ request.user.get_full_name|upper }}</b>
+                <a class='btn btn-sm ml-2' href="{% url 'usuarios:logout' %}" data-toggle="tooltip" title="Sair do sistema">
+                    <i class="fas fa-power-off text-warning"></i>
+                </a>
             </div>
         </div>
     </nav>

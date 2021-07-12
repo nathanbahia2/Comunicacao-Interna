@@ -15,9 +15,9 @@ def index(request):
         elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial).count()
         ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial).count()
     else:
-        funcionarios_count = models.Funcionario.objects.count()
-        elogios_count = models.Elogio.objects.count()
-        ocorrencias_count = models.Ocorrencia.objects.count()
+        funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial).count()
+        elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial).count()
+        ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial).count()
 
     form = forms.RelatorioForm()
 
@@ -47,22 +47,13 @@ def gerar(request):
         data_final = form.cleaned_data.get('data_final')
         tipo_relatorio = form.cleaned_data.get('tipo')
 
-        if usuario.tipo == '1':
-            filtros = {
-                'data__range': [data_inicial, data_final],
-                'funcionario__filial': usuario.filial
-            }
-        else:
-            filtros = {
-                'data__range': [data_inicial, data_final],
-            }
+        filtros = {
+            'data__range': [data_inicial, data_final],
+            'funcionario__filial': usuario.filial
+        }
 
         if tipo_relatorio == '3':
-            if usuario.tipo == '1':
-                query = models.Funcionario.objects.filter(filial=usuario.filial)
-            else:
-                query = models.Funcionario.objects.all()
-
+            query = models.Funcionario.objects.filter(filial=usuario.filial)
             tipo = 'Funcionários'
 
         else:

@@ -28,4 +28,6 @@ urlpatterns = [
     path('elogios/edit/<int:pk>/', views.elogios, name='edit_elogios'),
 
     path('delete/obj/', views.delete_model_object),
+
+    path('change/filial/', views.altera_filial, name='altera_filial'),
 ]
