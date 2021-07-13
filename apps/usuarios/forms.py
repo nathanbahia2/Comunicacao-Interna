@@ -108,6 +108,17 @@ class UsuarioForm(forms.ModelForm):
 
 
 class UsuarioEditForm(forms.ModelForm):
+    username = forms.CharField(
+        label='Usuário',
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'required': True,
+                'class': 'form-control'
+            }
+        )
+    )
+
     first_name = forms.CharField(
         label='Nome',
         required=True,
@@ -151,4 +162,4 @@ class UsuarioEditForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'filial', 'tipo']
+        fields = ['username', 'first_name', 'last_name', 'filial', 'tipo']

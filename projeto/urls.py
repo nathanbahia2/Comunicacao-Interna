@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include(('apps.usuarios.urls', 'usuarios'), namespace='usuarios')),
     path('relatorios/', include(('apps.relatorios.urls', 'relatorios'), namespace='relatorios')),
+    path('entregas/', include(('apps.entregas.urls', 'entregas'), namespace='entregas')),
     path('', include(('apps.core.urls', 'core'), namespace='core')),
 ]

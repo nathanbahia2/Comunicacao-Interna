@@ -17,40 +17,38 @@
         {% csrf_token %}
 
         <div class="row mx-0 mt-3">
-            {% if not instance %}
-                <div class="col-12 col-sm-6">
-                    <div class="form-group mb-2">
-                        <label for="{{ form.username.id_for_label }}">Usuário de acesso</label>
-                        {{ form.username }}
-                    </div>
+            <div class="col-12 col-sm-6 pl-sm-0">
+                <div class="form-group mb-2">
+                    <label for="{{ form.username.id_for_label }}">Usuário de acesso</label>
+                    {{ form.username }}
                 </div>
-            {% endif %}
-            <div class="col-12 col-sm-6">
+            </div>
+            <div class="col-12 col-sm-6 pr-sm-0">
                 <div class="form-group mb-2">
                     <label for="{{ form.first_name.id_for_label }}">Primeiro nome</label>
                     {{ form.first_name }}
                 </div>
             </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-12 col-sm-6 pl-sm-0">
                 <div class="form-group mb-2">
                     <label for="{{ form.last_name.id_for_label }}">Sobrenome</label>
                     {{ form.last_name }}
                 </div>
             </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-12 col-sm-6 pr-sm-0">
                 <div class="form-group mb-2">
                     <label for="{{ form.filial.id_for_label }}">{{ form.filial.label }}</label>
                     {{ form.filial }}
                 </div>
             </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-12 col-sm-6 pl-sm-0">
                 <div class="form-group mb-2">
                     <label for="{{ form.tipo.id_for_label }}">{{ form.tipo.label }}</label>
                     {{ form.tipo }}
                 </div>
             </div>
             {% if not instance %}
-                <div class="col-12 col-sm-6">
+                <div class="col-12 col-sm-6 pr-sm-0">
                     <div class="form-group mb-2">
                         <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
                         {{ form.password }}
@@ -58,7 +56,7 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="col-12 my-3">
+            <div class="col-12 my-3 px-0">
                 {% if instance %}
                     <a href="{% url "usuarios:usuarios" %}" type="reset" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Cancelar

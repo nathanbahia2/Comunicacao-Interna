@@ -170,6 +170,33 @@
         });
     });
 
+    $('.btn-delete-entregador').on('click', function () {
+        const id = $(this).data("entregador");
+        deleteObj({
+            id: id,
+            title: "Excluir entregador",
+            text: "Tem certeza que deseja excluir este entregador?",
+            url: "/delete/obj/",
+            model: 'entregador',
+            msgSuccess: "Entregador excluído com sucesso",
+            msgError: "Falha ao excluir entregador"
+        });
+    });
+
+
+    $('.btn-delete-entrega').on('click', function () {
+        const id = $(this).data("entrega");
+        deleteObj({
+            id: id,
+            title: "Excluir entrega",
+            text: "Tem certeza que deseja excluir esta entrega?",
+            url: "/delete/obj/",
+            model: 'entrega',
+            msgSuccess: "Entrega excluída com sucesso",
+            msgError: "Falha ao excluir entrega"
+        });
+    });
+
 
     function deleteObj ({id, title, text, url, model, msgSuccess, msgError}) {
         Swal.fire({

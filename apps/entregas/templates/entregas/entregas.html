@@ -1,0 +1,137 @@
+{% extends 'core/base.html' %}
+{% load filters %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    {% bootstrap_messages %}
+
+    <form method='post' class='my-5 jumbotron p-3' autocomplete="off">
+        {% if instance %}
+            <h5>Editar entrega</h5>
+        {% else %}
+            <h5>Cadastro de entregas</h5>
+        {% endif %}
+
+        {% csrf_token %}
+
+        <div class="row mx-0 mt-3">
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.nome_cliente.id_for_label }}">{{ form.nome_cliente.label }}</label>
+                    {{ form.nome_cliente }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.endereco_cliente.id_for_label }}">{{ form.endereco_cliente.label }}</label>
+                    {{ form.endereco_cliente }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.numero_pedido.id_for_label }}">{{ form.numero_pedido.label }}</label>
+                    {{ form.numero_pedido }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.valor_pedido.id_for_label }}">{{ form.valor_pedido.label }}</label>
+                    {{ form.valor_pedido }}
+                </div>
+            </div>
+                    <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.saida_pedido.id_for_label }}">{{ form.saida_pedido.label }}</label>
+                    {{ form.saida_pedido }}
+                    {{ form.saida_pedido.errors }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.entregador.id_for_label }}">{{ form.entregador.label }}</label>
+                    {{ form.entregador }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.filial_pedido.id_for_label }}">{{ form.filial_pedido.label }}</label>
+                    {{ form.filial_pedido }}
+                </div>
+            </div>
+            <div class="col-12 px-0">
+                <div class="form-group mb-2">
+                    <label for="{{ form.detalhes_pedido.id_for_label }}">{{ form.detalhes_pedido.label }}</label>
+                    {{ form.detalhes_pedido }}
+                </div>
+            </div>
+            <div class="col-12 my-3 px-0">
+                {% if instance %}
+                    <a href="{% url "usuarios:usuarios" %}" type="reset" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                {% else %}
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> Limpar
+                    </button>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {% if not instance %}
+        {% if entregas %}
+            <div class="table-responsive mt-5">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Ações</th>
+                            <th>Nome</th>
+                            <th>Endreço</th>
+                            <th>Pedido</th>
+                            <th>Valor</th>
+                            <th>Entregador</th>
+                            <th>Saída</th>
+                            <th>Recebimento</th>
+                            <th>Cadastro</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light">
+                        {% for entrega in entregas %}
+                            <tr>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{% url "usuarios:edit_usuarios" entrega.id %}" class="btn btn-sm btn-dark btn-edit-usuario" data-entrega="{{ entrega.id }}"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-danger btn-delete-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                                <td>{{ entrega.nome_cliente }}</td>
+                                <td>{{ entrega.endereco_cliente }}</td>
+                                <td>{{ entrega.numero_pedido }}</td>
+                                <td>{{ entrega.valor_pedido }}</td>
+                                <td>{{ entrega.entregador.nome }}</td>
+                                <td>{{ entrega.saida_pedido|date:'d/m/Y H:i' }}</td>
+                                <td>{{ entrega.recebimento_pedido|date:'d/m/Y H:i' }}</td>
+                                <td>{{ entrega.cadastro }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-warning mt-5">
+                Nenhuma entrega cadastrada até o momento
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}

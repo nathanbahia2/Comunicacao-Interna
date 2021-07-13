@@ -12,19 +12,19 @@
         {% csrf_token %}
 
         <div class="row mx-0 mt-3">
-            <div class="col-12 col-sm-6 col-md-4 pl-0 mb-3">
+            <div class="col-12 col-sm-6 col-md-4 mb-3 px-0 pr-sm-3">
                 <div class="card bg-dark shadow p-3">
                     <h5 class="card-title text-warning">Funcionários</h5>
                     <h1 class="text-light">{{ funcionarios_count }}</h1>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 mb-3">
+            <div class="col-12 col-sm-6 col-md-4 mb-3 px-0 px-sm-3">
                 <div class="card bg-dark shadow p-3">
                     <h5 class="card-title text-warning">Elogios</h5>
                     <h1 class="text-light">{{ elogios_count }}</h1>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 pr-0 mb-3">
+            <div class="col-12 col-sm-6 col-md-4 mb-3 px-0 pl-sm-3">
                 <div class="card bg-dark shadow p-3">
                     <h5 class="card-title text-warning">Ocorrências</h5>
                     <h1 class="text-light">{{ ocorrencias_count }}</h1>
@@ -37,17 +37,23 @@
 
         <div class="col-12 px-0 mt-3">
             <div class="row mx-0">
-                <div class="col-12 col-sm-4 pl-sm-0">
-                    <label for="{{ form.data_inicial.id_for_label }}">{{ form.data_inicial.label }}</label>
-                    {{ form.data_inicial }}
+                <div class="col-12 col-sm-4 px-0 pr-sm-3">
+                    <div class="form-group mb-2">
+                        <label for="{{ form.data_inicial.id_for_label }}">{{ form.data_inicial.label }}</label>
+                        {{ form.data_inicial }}
+                    </div>
                 </div>
-                <div class="col-12 col-sm-4 px-sm-auto">
-                    <label for="{{ form.data_final.id_for_label }}">{{ form.data_final.label }}</label>
-                    {{ form.data_final }}
+                <div class="col-12 col-sm-4 px-0 px-sm-3">
+                    <div class="form-group mb-2">
+                        <label for="{{ form.data_final.id_for_label }}">{{ form.data_final.label }}</label>
+                        {{ form.data_final }}
+                    </div>
                 </div>
-                <div class="col-12 col-sm-4 pr-sm-0">
-                    <label for="{{ form.tipo.id_for_label }}">{{ form.tipo.label }}</label>
-                    {{ form.tipo }}
+                <div class="col-12 col-sm-4 px-0 pl-sm-3">
+                    <div class="form-group mb-2">
+                        <label for="{{ form.tipo.id_for_label }}">{{ form.tipo.label }}</label>
+                        {{ form.tipo }}
+                    </div>
                 </div>
                 <div class="col-12 px-0 my-3">
                     <button class="btn btn-primary">Gerar relatório</button>

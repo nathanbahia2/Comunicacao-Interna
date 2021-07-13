@@ -5,8 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.http.response import JsonResponse
 from django.contrib import messages
-from django.core import serializers
 
+from apps.entregas.models import Entregador, Entrega
 from apps.core import forms, utils, send_email
 from apps.core import models
 
@@ -452,6 +452,8 @@ def delete_model_object(request):
             'cargos': models.Cargo,
             'motivos': models.Motivo,
             'email': models.EmailResponsaveis,
+            'entrega': Entrega,
+            'entregador': Entregador,
             'usuarios': User
         }[model_name]
 
