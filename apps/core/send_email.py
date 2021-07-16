@@ -15,7 +15,7 @@ PASSWORD_APIGMAIL = config('PASSWORD_APIGMAIL')
 
 def send_ocorrencia(ocorrencia):
     filial = ocorrencia.funcionario.filial
-    emails = [user.email for user in filial.emailresponsaveis_set.all()]
+    emails = ",".join([user.email for user in filial.emailresponsaveis_set.all()])
 
     if emails:
         assunto = f'{ocorrencia.funcionario.filial.nome} - {ocorrencia.get_motivo_display} - {ocorrencia.funcionario.nome}'
@@ -49,7 +49,7 @@ def send_ocorrencia(ocorrencia):
 
 def send_elogio(elogio):
     filial = elogio.funcionario.filial
-    emails = [user.email for user in filial.emailresponsaveis_set.all()]
+    emails = ",".join([user.email for user in filial.emailresponsaveis_set.all()])
 
     if emails:
         assunto = f'{elogio.funcionario.filial.nome} - {elogio.funcionario.nome}'
@@ -69,28 +69,29 @@ def send_elogio(elogio):
             """
 
         send(
-        filial=filial,
-        tipo='Elogio',
-        data={
-            "de": ID_APIGMAIL,
-            "para": emails,
-            "assunto": assunto,
-            "mensagem": mensagem
-        })
+            filial=filial,
+            tipo='Elogio',
+            data={
+                "de": ID_APIGMAIL,
+                "para": emails,
+                "assunto": assunto,
+                "mensagem": mensagem
+            }
+        )
 
 
 def send(filial, tipo, data):
-    try:
-        requests.post(
+    email = requests.post(
             url=URL_APIGMAIL,
             auth=(USER_APIGMAIL, PASSWORD_APIGMAIL),
             data=data
         )
 
-    except:
+    if email.status_code not in ['200', '201']:
         models.EmailNaoEntregue.objects.create(
             filial=filial,
             tipo=tipo,
             assunto=data.get('assunto'),
-            mensagem=data.get('mensagem')
+            mensagem=data.get('mensagem'),
+            retorno=email.json()
         )
