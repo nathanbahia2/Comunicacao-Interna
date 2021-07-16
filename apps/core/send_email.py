@@ -87,7 +87,7 @@ def send(filial, tipo, data):
             data=data
         )
 
-    if email.status_code not in ['200', '201']:
+    if email.status_code not in [200, 201]:
         models.EmailNaoEntregue.objects.create(
             filial=filial,
             tipo=tipo,
