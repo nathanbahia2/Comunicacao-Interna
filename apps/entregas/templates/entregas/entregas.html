@@ -83,52 +83,6 @@
             </div>
         </div>
     </form>
-
-    {% if not instance %}
-        {% if entregas %}
-            <div class="table-responsive mt-5">
-                <table class="table table-bordered text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Ações</th>
-                            <th>Nome</th>
-                            <th>Endreço</th>
-                            <th>Pedido</th>
-                            <th>Valor</th>
-                            <th>Entregador</th>
-                            <th>Saída</th>
-                            <th>Recebimento</th>
-                            <th>Cadastro</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-light">
-                        {% for entrega in entregas %}
-                            <tr>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="{% url "usuarios:edit_usuarios" entrega.id %}" class="btn btn-sm btn-dark btn-edit-usuario" data-entrega="{{ entrega.id }}"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-danger btn-delete-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </td>
-                                <td>{{ entrega.nome_cliente }}</td>
-                                <td>{{ entrega.endereco_cliente }}</td>
-                                <td>{{ entrega.numero_pedido }}</td>
-                                <td>{{ entrega.valor_pedido }}</td>
-                                <td>{{ entrega.entregador.nome }}</td>
-                                <td>{{ entrega.saida_pedido|date:'d/m/Y H:i' }}</td>
-                                <td>{{ entrega.recebimento_pedido|date:'d/m/Y H:i' }}</td>
-                                <td>{{ entrega.cadastro }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% else %}
-            <div class="alert alert-warning mt-5">
-                Nenhuma entrega cadastrada até o momento
-            </div>
-        {% endif %}
-    {% endif %}
 </div>
 
 {% endblock %}

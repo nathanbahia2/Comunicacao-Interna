@@ -26,6 +26,8 @@ class Filial(Base):
         return f'{self.nome} - {self.cidade}'
 
     class Meta:
+        verbose_name = 'Filial'
+        verbose_name_plural = 'Filiais'
         ordering = ['nome', 'cidade']
 
 
@@ -37,6 +39,8 @@ class Cargo(Base):
         return f'{self.nome}'
 
     class Meta:
+        verbose_name = 'Cargo'
+        verbose_name_plural = 'Cargos'
         ordering = ['nome']
 
 
@@ -50,6 +54,8 @@ class Funcionario(Base):
         return f'{self.nome} - {self.cargo}'
 
     class Meta:
+        verbose_name = 'Funcionário'
+        verbose_name_plural = 'Funcionários'
         ordering = ['nome']
 
 
@@ -58,9 +64,11 @@ class Motivo(Base):
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.nome}'
+        return self.nome
 
     class Meta:
+        verbose_name = 'Motivo'
+        verbose_name_plural = 'Motivos'
         ordering = ['nome']
 
 
@@ -74,7 +82,9 @@ class Ocorrencia(Base):
         return self.observacao or '---------'
 
     class Meta:
-        ordering = ['data']
+        verbose_name = 'Ocorrência'
+        verbose_name_plural = 'Ocorrências'
+        ordering = ['-data'] 
 
     @property
     def get_motivo_display(self):
@@ -97,6 +107,11 @@ class Elogio(Base):
     def __str__(self):
         return self.funcionario.nome
 
+    class Meta:
+        verbose_name = 'Elogio'
+        verbose_name_plural = 'Elogios'
+        ordering = ['-data']        
+
 
 class EmailResponsaveis(Base):
     nome = models.CharField(max_length=255)
@@ -105,3 +120,24 @@ class EmailResponsaveis(Base):
 
     def __str__(self):
         return self.nome
+
+    class Meta:
+        verbose_name = 'Cadastro de e-mail dos responsáveis'
+        verbose_name_plural = 'Cadastro de e-mail dos responsáveis'
+        ordering = ['nome']
+
+
+class EmailNaoEntregue(models.Model):
+    data = models.DateTimeField(auto_now_add=True)
+    filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=20)
+    assunto = models.CharField(max_length=255)
+    mensagem = models.TextField()
+
+    def __str__(self):
+        return self.assunto
+
+    class Meta:
+        verbose_name = 'E-mail não entregue'
+        verbose_name_plural = 'E-mails não entregues'
+        ordering = ['-data']

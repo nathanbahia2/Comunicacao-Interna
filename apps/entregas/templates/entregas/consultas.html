@@ -1,10 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    {% bootstrap_messages %}
+
+    <form method='get' class='my-5 jumbotron p-3' autocomplete="off">
+        <h5>Consulta de entregas</h5>
+        <div class="row mx-0 mt-3">
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.data_inicial.id_for_label }}">{{ form.data_inicial.label }}</label>
+                    {{ form.data_inicial }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.data_final.id_for_label }}">{{ form.data_final.label }}</label>
+                    {{ form.data_final }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.numero_pedido.id_for_label }}">{{ form.numero_pedido.label }}</label>
+                    {{ form.numero_pedido }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.entregador.id_for_label }}">{{ form.entregador.label }}</label>
+                    {{ form.entregador }}
+                </div>
+            </div>
+            <div class="col-12 my-3 px-0">
+                <button type="reset" class="btn btn-secondary">
+                    <i class="fas fa-eraser"></i> Limpar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Pesquisar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {% if entregas %}
+        <div class="jumbotron p-3">
+            {% if dias %}
+                <p class="mb-3"><b>Exibindo todos os resultados para os últimos {{ dias }} dias</b></p>
+            {% elif filtros %}
+                <p class="mb-3"><b>Exibindo todos os resultados de {{ filtros.data__range.0|date:'d/m/Y' }} a {{ filtros.data__range.1|date:'d/m/Y' }}</b></p>
+            {% endif %}
+            <div class="form-inline">
+                <div class="input-group">
+                    <label for="dias">Exibir resultados para os últimos: </label>
+                    <select name="dias" id="dias" class="form-control form-control-sm ml-2">
+                        <option value="30" {% if dias == '30' %}selected{% endif %}>30 dias</option>
+                        <option value="60" {% if dias == '60' %}selected{% endif %}>60 dias</option>
+                        <option value="90" {% if dias == '90' %}selected{% endif %}>90 dias</option>
+                        <option value="120" {% if dias == '120' %}selected{% endif %}>120 dias</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-5">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ações</th>
+                        <th>Nome</th>
+                        <th>Endreço</th>
+                        <th>Pedido</th>
+                        <th>Valor</th>
+                        <th>Entregador</th>
+                        <th>Saída</th>
+                        <th>Recebimento</th>
+                        <th>Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for entrega in entregas %}
+                        <tr>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{% url "usuarios:edit_usuarios" entrega.id %}" class="btn btn-sm btn-dark btn-edit-usuario" data-entrega="{{ entrega.id }}"><i class="fas fa-edit"></i></a>
+                                    <button class="btn btn-sm btn-info btn-info-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-info-circle"></i></button>
+                                    <button class="btn btn-sm btn-danger btn-delete-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                            <td>{{ entrega.nome_cliente }}</td>
+                            <td>{{ entrega.endereco_cliente }}</td>
+                            <td>{{ entrega.numero_pedido }}</td>
+                            <td>{{ entrega.valor_pedido }}</td>
+                            <td>{{ entrega.entregador.nome }}</td>
+                            <td>{{ entrega.saida_pedido|date:'d/m/Y H:i' }}</td>
+                            <td>{{ entrega.recebimento_pedido|date:'d/m/Y H:i' }}</td>
+                            <td>{{ entrega.cadastro }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-warning mt-5">
+            {% if consulta %}
+                Nenhuma entrega encontrada
+            {% else %}
+                Nenhuma entrega cadastrada até o momento
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

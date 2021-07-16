@@ -82,8 +82,7 @@ def usuarios(request, pk=None):
     query = None
     if not instance:
         query = models.Perfil.objects.filter(
-            filial=usuario.filial,
-            tipo='1'
+            filial=usuario.filial, tipo='1'
         ).exclude(id=usuario.usuario.id).order_by('usuario__first_name')
 
     context = {

@@ -1,5 +1,16 @@
+from apps.core import models
+import requests
+
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+
+from decouple import config
+
+
+URL_APIGMAIL = config('URL_APIGMAIL')
+ID_APIGMAIL = config('ID_APIGMAIL')
+USER_APIGMAIL = config('USER_APIGMAIL')
+PASSWORD_APIGMAIL = config('PASSWORD_APIGMAIL')
 
 
 def send_ocorrencia(ocorrencia):
@@ -7,8 +18,8 @@ def send_ocorrencia(ocorrencia):
     emails = [user.email for user in filial.emailresponsaveis_set.all()]
 
     if emails:
-        title = f'{ocorrencia.funcionario.filial.nome} - {ocorrencia.get_motivo_display} - {ocorrencia.funcionario.nome}'
-        html_content = f"""
+        assunto = f'{ocorrencia.funcionario.filial.nome} - {ocorrencia.get_motivo_display} - {ocorrencia.funcionario.nome}'
+        mensagem = f"""
             <div style="text-align: center">
                 <img src="https://casadoscereaissupercenter.pythonanywhere.com/static/images/logo.png" width="300" />
             </div>
@@ -24,20 +35,16 @@ def send_ocorrencia(ocorrencia):
             <p style="font-family: arial; font-size: 14pt;"><b>Observação:</b> {ocorrencia.observacao}</p>
             """
 
-        text_content = title
-        from_mail = settings.EMAIL_HOST_USER
-        msg = EmailMultiAlternatives(
-            title,
-            text_content,
-            from_email=from_mail,
-            to=emails
+        send(
+            filial=filial,
+            tipo='Ocorrência',
+            data={
+                "de": ID_APIGMAIL,
+                "para": emails,
+                "assunto": assunto,
+                "mensagem": mensagem
+            }
         )
-        msg.attach_alternative(html_content, "text/html")
-        try:
-            msg.send()
-
-        except Exception as e:
-            print(e)
 
 
 def send_elogio(elogio):
@@ -45,8 +52,8 @@ def send_elogio(elogio):
     emails = [user.email for user in filial.emailresponsaveis_set.all()]
 
     if emails:
-        title = f'{elogio.funcionario.filial.nome} - {elogio.funcionario.nome}'
-        html_content = f"""
+        assunto = f'{elogio.funcionario.filial.nome} - {elogio.funcionario.nome}'
+        mensagem = f"""
             <div style="text-align: center">
                 <img src="https://casadoscereaissupercenter.pythonanywhere.com/static/images/logo.png" width="300" />
             </div>
@@ -61,17 +68,29 @@ def send_elogio(elogio):
             <p style="font-family: arial; font-size: 14pt;"><b>Observação:</b> {elogio.observacao}</p>
             """
 
-        text_content = title
-        from_mail = settings.EMAIL_HOST_USER
-        msg = EmailMultiAlternatives(
-            title,
-            text_content,
-            from_email=from_mail,
-            to=emails
-        )
-        msg.attach_alternative(html_content, "text/html")
-        try:
-            msg.send()
+        send(
+        filial=filial,
+        tipo='Elogio',
+        data={
+            "de": ID_APIGMAIL,
+            "para": emails,
+            "assunto": assunto,
+            "mensagem": mensagem
+        })
 
-        except Exception as e:
-            print(e)
+
+def send(filial, tipo, data):
+    try:
+        requests.post(
+            url=URL_APIGMAIL,
+            auth=(USER_APIGMAIL, PASSWORD_APIGMAIL),
+            data=data
+        )
+
+    except:
+        models.EmailNaoEntregue.objects.create(
+            filial=filial,
+            tipo=tipo,
+            assunto=data.get('assunto'),
+            mensagem=data.get('mensagem')
+        )
