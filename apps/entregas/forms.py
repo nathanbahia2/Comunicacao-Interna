@@ -1,7 +1,4 @@
-from datetime import datetime
-
 from django import forms
-from django.utils import timezone
 
 from apps.core.models import Filial
 from apps.entregas import models
@@ -105,7 +102,7 @@ class EntregaForm(forms.ModelForm):
     )
 
     valor_pedido = forms.DecimalField(
-        label='Número do pedido',
+        label='Valor do pedido',
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control',
@@ -170,3 +167,63 @@ class EntregaForm(forms.ModelForm):
         self.fields['filial_pedido'].queryset = Filial.objects.filter(id=usuario.filial.id)
         self.fields['filial_pedido'].initial = usuario.filial
         self.fields['entregador'].queryset = models.Entregador.objects.filter(filial=usuario.filial)
+
+
+class ConsultaEntregaForm(forms.Form):
+    data_inicial = forms.DateField(
+        label='Data inicial',
+        required=True,
+        widget=forms.DateInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'date'
+            }
+        )
+    )
+
+    data_final = forms.DateField(
+        label='Data final',
+        required=True,
+        widget=forms.DateInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'date'
+            }
+        )
+    )
+
+    entregador = forms.ModelChoiceField(
+        label='Entregador',
+        queryset=models.Entregador.objects.all(),
+        required=False,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+
+    pedido = forms.CharField(
+        label='Número do pedido',
+        required=False,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+
+    cliente = forms.CharField(
+        label='Nome do cliente',
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+
+    def __init__(self, usuario, *args, **kwargs):
+        super(ConsultaEntregaForm, self).__init__(*args, **kwargs)
+
+        self.fields['entregador'].queryset = models.Entregador.objects.filter(filial_id=usuario.filial.id)

@@ -24,14 +24,20 @@
             </div>
             <div class="col-12 col-sm-6 px-0 pr-sm-3">
                 <div class="form-group mb-2">
-                    <label for="{{ form.numero_pedido.id_for_label }}">{{ form.numero_pedido.label }}</label>
-                    {{ form.numero_pedido }}
+                    <label for="{{ form.pedido.id_for_label }}">{{ form.pedido.label }}</label>
+                    {{ form.pedido }}
                 </div>
             </div>
             <div class="col-12 col-sm-6 px-0 pl-sm-3">
                 <div class="form-group mb-2">
                     <label for="{{ form.entregador.id_for_label }}">{{ form.entregador.label }}</label>
                     {{ form.entregador }}
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 px-0 pr-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.cliente.id_for_label }}">{{ form.cliente.label }}</label>
+                    {{ form.cliente }}
                 </div>
             </div>
             <div class="col-12 my-3 px-0">
@@ -85,7 +91,10 @@
                         <tr>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{% url "usuarios:edit_usuarios" entrega.id %}" class="btn btn-sm btn-dark btn-edit-usuario" data-entrega="{{ entrega.id }}"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url "entregas:edit_entregas" entrega.id %}" class="btn btn-sm btn-dark"><i class="fas fa-edit"></i></a>
+                                    {% if not entrega.recebida %}
+                                        <button class="btn btn-sm btn-success btn-finaliza-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-check"></i></button>
+                                    {% endif %}
                                     <button class="btn btn-sm btn-info btn-info-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-info-circle"></i></button>
                                     <button class="btn btn-sm btn-danger btn-delete-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-trash"></i></button>
                                 </div>

@@ -22,24 +22,28 @@
                 <div class="form-group mb-2">
                     <label for="{{ form.nome_cliente.id_for_label }}">{{ form.nome_cliente.label }}</label>
                     {{ form.nome_cliente }}
+                    {{ form.nome_cliente.errors }}
                 </div>
             </div>
             <div class="col-12 col-sm-6 px-0 pl-sm-3">
                 <div class="form-group mb-2">
                     <label for="{{ form.endereco_cliente.id_for_label }}">{{ form.endereco_cliente.label }}</label>
                     {{ form.endereco_cliente }}
+                    {{ form.endereco_cliente.errors }}
                 </div>
             </div>
             <div class="col-12 col-sm-6 px-0 pr-sm-3">
                 <div class="form-group mb-2">
                     <label for="{{ form.numero_pedido.id_for_label }}">{{ form.numero_pedido.label }}</label>
                     {{ form.numero_pedido }}
+                    {{ form.numero_pedido.errors }}
                 </div>
             </div>
             <div class="col-12 col-sm-6 px-0 pl-sm-3">
                 <div class="form-group mb-2">
                     <label for="{{ form.valor_pedido.id_for_label }}">{{ form.valor_pedido.label }}</label>
                     {{ form.valor_pedido }}
+                    {{ form.valor_pedido.errors }}
                 </div>
             </div>
                     <div class="col-12 col-sm-6 px-0 pr-sm-3">
@@ -53,23 +57,26 @@
                 <div class="form-group mb-2">
                     <label for="{{ form.entregador.id_for_label }}">{{ form.entregador.label }}</label>
                     {{ form.entregador }}
+                    {{ form.entregador.errors }}
                 </div>
             </div>
             <div class="col-12 col-sm-6 px-0 pr-sm-3">
                 <div class="form-group mb-2">
                     <label for="{{ form.filial_pedido.id_for_label }}">{{ form.filial_pedido.label }}</label>
                     {{ form.filial_pedido }}
+                    {{ form.filial_pedido.errors }}
                 </div>
             </div>
             <div class="col-12 px-0">
                 <div class="form-group mb-2">
                     <label for="{{ form.detalhes_pedido.id_for_label }}">{{ form.detalhes_pedido.label }}</label>
                     {{ form.detalhes_pedido }}
+                    {{ form.detalhes_pedido.errors }}
                 </div>
             </div>
             <div class="col-12 my-3 px-0">
                 {% if instance %}
-                    <a href="{% url "usuarios:usuarios" %}" type="reset" class="btn btn-secondary">
+                    <a href="{% url "entregas:consulta_entregas" %}" type="reset" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Cancelar
                     </a>
                 {% else %}

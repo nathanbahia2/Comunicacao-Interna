@@ -51,6 +51,9 @@
             .errorlist li {
                 color: #dc3545;
             }
+            .swal2-confirm {
+                background-color: #007bff !important;
+            }
         </style>
     </head>
     <body>
@@ -112,7 +115,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropEntregas">
                         <a class="dropdown-item" href="{% url 'entregas:entregas' %}">Entregas</a>
                         <a class="dropdown-item" href="{% url 'entregas:entregadores' %}">Entregadores</a>
-                        <a class="dropdown-item" href="{% url 'core:consulta_ocorrencias' %}">Consultas</a>
+                        <a class="dropdown-item" href="{% url 'entregas:consulta_entregas' %}">Consultas</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

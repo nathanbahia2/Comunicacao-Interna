@@ -14,8 +14,14 @@ class Base(models.Model):
     @property
     def cadastro(self):
         if self.usuario:
-            return f"{self.usuario.get_full_name()} em {self.criacao.strftime('%d/%m/%Y')}"
+            return f"{self.usuario.get_full_name()} em {self.criacao.strftime('%d/%m/%Y %H:%M')}"
         return f"Usuário excluído em {self.criacao.strftime('%d/%m/%Y')}"
+
+    @property
+    def get_usuario_display(self):
+        if self.usuario:
+            return self.usuario.get_full_name()
+        return 'Usuário excluído'
 
 
 class Filial(Base):
@@ -91,12 +97,6 @@ class Ocorrencia(Base):
         if self.motivo:
             return self.motivo.nome
         return 'Motivo excluído'
-
-    @property
-    def get_usuario_display(self):
-        if self.usuario:
-            return self.usuario.get_full_name()
-        return 'Usuário excluído'
 
 
 class Elogio(Base):

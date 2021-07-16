@@ -36,3 +36,20 @@ class Entrega(Base):
 
     class Meta:
         ordering = ['saida_pedido']
+
+    @property
+    def recebida(self):
+        if self.usuario_recebimento:
+            return True
+        return False
+
+    @property
+    def recebimento(self):
+        if self.usuario_recebimento:
+            if self.recebimento_pedido:
+                return f'{self.usuario_recebimento.get_full_name()} em {self.recebimento_pedido.strftime("%d/%m/%Y %H:%M")}'
+            return self.usuario_recebimento.get_full_name()
+        else:
+            if self.recebimento_pedido:
+                return self.recebimento_pedido.strftime("%d/%m/%Y %H:%M")
+        return None
