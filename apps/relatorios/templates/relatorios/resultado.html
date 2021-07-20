@@ -101,6 +101,41 @@
             </tbody>
         </table>
     </div>
+{% elif tipo_relatorio == '4' and query %}
+    <div class="table-responsive">
+        <table class="table table bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>Endreço</th>
+                    <th>Pedido</th>
+                    <th>Valor</th>
+                    <th>Detalhes</th>
+                    <th>Entregador</th>
+                    <th>Saída</th>
+                    <th>Recebimento</th>
+                    <th>Observação Final</th>
+                    <th>Cadastro</th>
+                </tr>
+            </thead>
+            <tbody class="table-light">
+                {% for q in query %}
+                    <tr>
+                        <td>{{ q.nome_cliente }}</td>
+                        <td>{{ q.endereco_cliente }}</td>
+                        <td>{{ q.numero_pedido }}</td>
+                        <td>{{ q.valor_pedido }}</td>
+                        <td>{{ q.detalhes_pedido }}</td>
+                        <td>{{ q.entregador.nome }}</td>
+                        <td>{{ q.saida_pedido }}</td>
+                        <td>{{ q.recebimento }}</td>
+                        <td>{{ q.observacao_final }}</td>
+                        <td>{{ q.cadastro }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% else %}
     <div class="alert alert-warning">Nenhum resultado encontrado para a busca realizada</div>
 {% endif %}

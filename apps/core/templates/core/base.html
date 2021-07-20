@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 {% load bootstrap4 %}
 
@@ -113,7 +114,7 @@
                         Entregas
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropEntregas">
-                        <a class="dropdown-item" href="{% url 'entregas:entregas' %}">Entregas</a>
+                        <a class="dropdown-item" href="{% url 'entregas:entregas' %}">Adicionar</a>
                         <a class="dropdown-item" href="{% url 'entregas:entregadores' %}">Entregadores</a>
                         <a class="dropdown-item" href="{% url 'entregas:consulta_entregas' %}">Consultas</a>
                     </div>
@@ -156,6 +157,7 @@
     {% block content %} {% endblock %}
     </body>
     {% bootstrap_javascript jquery="full" %}
-    {% include 'core/script.html' %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'js/main.min.js' %}"></script>
     {% block script %}{% endblock %}
 </html>

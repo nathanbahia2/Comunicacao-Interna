@@ -28,7 +28,7 @@ def usuarios(request, pk=None):
     msg_erro = 'Falha ao cadastrar usuário'
 
     if pk:
-        instance = User.objects.get(pk=pk)
+        instance = User.is_active.get(pk=pk)
         perfil = instance.perfil.latest('id')
         msg_sucesso = 'Usuário editado com sucesso'
         msg_erro = 'Falha ao editar usuário'
@@ -67,7 +67,7 @@ def usuarios(request, pk=None):
                 obj = form.save(commit=False)
                 obj.set_password(form.cleaned_data.get('password'))
                 obj.save()
-                models.Perfil.objects.create(
+                models.Perfil.is_active.create(
                     usuario=obj,
                     filial=form.cleaned_data.get('filial'),
                     tipo=form.cleaned_data.get('tipo')
@@ -81,7 +81,7 @@ def usuarios(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Perfil.objects.filter(
+        query = models.Perfil.is_active.filter(
             filial=usuario.filial, tipo='1'
         ).exclude(id=usuario.usuario.id).order_by('usuario__first_name')
 
@@ -99,9 +99,9 @@ def delete_usuarios(request):
     response = False
     try:
         usuario_id = request.POST.get('data')
-        usuario = User.objects.get(pk=usuario_id)
+        usuario = User.is_active.get(pk=usuario_id)
 
-        models.Perfil.objects.filter(
+        models.Perfil.is_active.filter(
             usuario=usaurio
         ).delete()
         usuario.delete()
@@ -120,7 +120,7 @@ def delete_usuarios(request):
 def change_password(request):
     try:
         usuario_id = request.POST.get('usuario')
-        usuario = User.objects.get(pk=usuario_id)
+        usuario = User.is_active.get(pk=usuario_id)
         password = request.POST.get('password')
 
         usuario.set_password(password)

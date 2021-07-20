@@ -10,7 +10,7 @@ def usuario(request):
 
     if perfil:
         context['usuario']['filial'] = perfil.filial
-        context['usuario']['filiais'] = models.Filial.objects.all()
+        context['usuario']['filiais'] = models.Filial.is_active.all()
 
         if perfil.tipo == '2':
             context['usuario']['administrador'] = True

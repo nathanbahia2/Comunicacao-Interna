@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
+from apps.core import utils
 from apps.entregas import forms, models
 
 
@@ -16,7 +17,7 @@ def entregadores(request, pk=None):
     msg_erro = 'Falha ao cadastrar entregador'
 
     if pk:
-        instance = models.Entregador.objects.get(pk=pk)
+        instance = models.Entregador.is_active.get(pk=pk)
         msg_sucesso = 'Entregador editado com sucesso'
         msg_erro = 'Falha ao editar entregador'
 
@@ -44,7 +45,7 @@ def entregadores(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Entregador.objects.filter(filial=usuario.filial)
+        query = models.Entregador.is_active.filter(filial=usuario.filial)
 
     context = {
         'form': form,
@@ -63,7 +64,7 @@ def entregas(request, pk=None):
     msg_erro = 'Falha ao cadastrar entrega'
 
     if pk:
-        instance = models.Entrega.objects.get(pk=pk)
+        instance = models.Entrega.is_active.get(pk=pk)
         msg_sucesso = 'Entrega editado com sucesso'
         msg_erro = 'Falha ao editar entrega'
 
@@ -91,14 +92,9 @@ def entregas(request, pk=None):
         else:
             messages.error(request, msg_erro)
 
-    query = None
-    if not instance:
-        query = models.Entrega.objects.all()
-
     context = {
         'form': form,
         'instance': instance,
-        'entregas': query
     }
     return render(request, 'entregas/entregas.html', context)
 
@@ -106,26 +102,36 @@ def entregas(request, pk=None):
 @login_required
 def consulta_entregas(request):
     usuario = request.user.perfil.latest('id')
-    filtros = {}
-    query = None
+
+    consulta = False
+
+    dias = 30 if request.GET.get('dias') not in ['30', '60', '90', '120'] else request.GET.get('dias')
+    data_range = utils.get_data_range(dias)
+
+    filtros = {
+        'saida_pedido__range': data_range,
+        'filial_pedido': usuario.filial
+    }
+
+    query = models.Entrega.is_active.filter(**filtros).order_by('-criacao')
 
     form = forms.ConsultaEntregaForm(
         usuario=usuario,
-        data=request.GET)
+        data=request.GET
+    )
 
     if form.is_valid():
-        data = form.cleaned_data
+        data_inicial = form.cleaned_data.get('data_inicial')
+        data_final = form.cleaned_data.get('data_final')
+        entregador = form.cleaned_data.get('entregador')
+        pedido = form.cleaned_data.get('pedido')
+        cliente = form.cleaned_data.get('cliente')
 
-        data_inicial = data.get('data_inicial')
-        data_final = data.get('data_final')
-        entregador = data.get('entregador')
-        pedido = data.get('pedido')
-        cliente = data.get('cliente')
-
-        if data_inicial and data_final:
+        if data_final and data_inicial:
+            dias = None
             filtros['saida_pedido__range'] = [
-                data_inicial.strftime("%Y-%m-%d") + " 00:00:00",
-                data_final.strftime("%Y-%m-%d") + " 23:59:59"
+                utils.convert_date_to_datetime(data_inicial),
+                utils.convert_date_to_datetime(data_final, inicio=False)
             ]
 
         if entregador:
@@ -137,10 +143,16 @@ def consulta_entregas(request):
         if cliente:
             filtros['nome_cliente__icontains'] = cliente
 
-        query = models.Entrega.objects.filter(**filtros)
+        consulta = True
+        query = models.Entrega.is_active.filter(**filtros)
+
+        print(filtros)
 
     context = {
         'form': form,
+        'dias': dias,
+        'consulta': consulta,
+        'filtros': filtros,
         'entregas': query
     }
     return render(request, 'entregas/consultas.html', context)
@@ -149,7 +161,7 @@ def consulta_entregas(request):
 @login_required
 def info_entregas(request):
     entrega_id = request.GET.get('entrega')
-    entrega = models.Entrega.objects.get(pk=entrega_id)
+    entrega = models.Entrega.is_active.get(pk=entrega_id)
 
     json_entrega = {
         'cliente': entrega.nome_cliente,
@@ -173,7 +185,7 @@ def finaliza_entrega(request):
     recebimento_pedido = request.POST.get('recebimento_pedido')
     observacao_final = request.POST.get('observacao_final')
 
-    entrega = models.Entrega.objects.get(pk=entrega_id)
+    entrega = models.Entrega.is_active.get(pk=entrega_id)
 
     entrega.recebimento_pedido = recebimento_pedido
     entrega.observacao_final = observacao_final

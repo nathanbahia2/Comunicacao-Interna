@@ -58,24 +58,8 @@
     </form>
 
     {% if ocorrencias %}
-        <div class="jumbotron p-3">
-            {% if dias %}
-                <p class="mb-3"><b>Exibindo todos os resultados para os últimos {{ dias }} dias</b></p>
-            {% elif filtros %}
-                <p class="mb-3"><b>Exibindo todos os resultados de {{ filtros.data__range.0|date:'d/m/Y' }} a {{ filtros.data__range.1|date:'d/m/Y' }}</b></p>
-            {% endif %}
-            <div class="form-inline">
-                <div class="input-group">
-                    <label for="dias">Exibir resultados para os últimos: </label>
-                    <select name="dias" id="dias" class="form-control form-control-sm ml-2">
-                        <option value="30" {% if dias == '30' %}selected{% endif %}>30 dias</option>
-                        <option value="60" {% if dias == '60' %}selected{% endif %}>60 dias</option>
-                        <option value="90" {% if dias == '90' %}selected{% endif %}>90 dias</option>
-                        <option value="120" {% if dias == '120' %}selected{% endif %}>120 dias</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+
+        {% include 'core/utils/consulta_range_dias.html' %}
 
         <div class="table-responsive mt-5">
             <table class="table table-bordered text-center">

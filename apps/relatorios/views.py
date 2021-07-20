@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.views import login_required
-from django.views.decorators.http import require_POST
 
-from apps.core import models
+from apps.core import models, utils
+from apps.entregas.models import Entrega
 from apps.relatorios import forms
 
 
@@ -11,13 +11,13 @@ def index(request):
     usuario = request.user.perfil.latest('id')
 
     if usuario.tipo == '1':
-        funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial).count()
-        elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial).count()
-        ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial).count()
+        funcionarios_count = models.Funcionario.is_active.filter(filial=usuario.filial).count()
+        elogios_count = models.Elogio.is_active.filter(funcionario__filial=usuario.filial).count()
+        ocorrencias_count = models.Ocorrencia.is_active.filter(funcionario__filial=usuario.filial).count()
     else:
-        funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial).count()
-        elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial).count()
-        ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial).count()
+        funcionarios_count = models.Funcionario.is_active.filter(filial=usuario.filial).count()
+        elogios_count = models.Elogio.is_active.filter(funcionario__filial=usuario.filial).count()
+        ocorrencias_count = models.Ocorrencia.is_active.filter(funcionario__filial=usuario.filial).count()
 
     form = forms.RelatorioForm()
 
@@ -52,17 +52,28 @@ def gerar(request):
         }
 
         if tipo_relatorio == '3':
-            query = models.Funcionario.objects.filter(filial=usuario.filial)
+            query = models.Funcionario.is_active.filter(filial=usuario.filial)
             tipo = 'Funcionários'
 
         else:
             if data_inicial and data_final:
                 if tipo_relatorio == '1':
-                    query = models.Ocorrencia.objects.filter(**filtros)
+                    query = models.Ocorrencia.is_active.filter(**filtros)
+                    tipo = 'Ocorrências'
 
                 elif tipo_relatorio == '2':
-                    query = models.Elogio.objects.filter(**filtros)
+                    query = models.Elogio.is_active.filter(**filtros)
                     tipo = 'Elogios'
+
+                elif tipo_relatorio == '4':
+                    filtros = {
+                        'saida_pedido__range': [
+                            utils.convert_date_to_datetime(data_inicial),
+                            utils.convert_date_to_datetime(data_final, inicio=False)
+                        ]
+                    }
+                    query = Entrega.is_active.filter(**filtros)
+                    tipo = 'Entregas'
 
     context = {
         'data_inicial': data_inicial,

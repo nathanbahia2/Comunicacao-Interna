@@ -50,7 +50,7 @@ class EntregadorForm(forms.ModelForm):
 
     filial = forms.ModelChoiceField(
         label='Filial',
-        queryset=Filial.objects.all(),
+        queryset=Filial.is_active.all(),
         widget=forms.Select(
             attrs={
                 'class': 'form-control',
@@ -66,7 +66,7 @@ class EntregadorForm(forms.ModelForm):
     def __init__(self, usuario, *args, **kwargs):
         super(EntregadorForm, self).__init__(*args, **kwargs)
 
-        self.fields['filial'].queryset = Filial.objects.filter(id=usuario.filial.id)
+        self.fields['filial'].queryset = Filial.is_active.filter(id=usuario.filial.id)
         self.fields['filial'].initial = usuario.filial
 
 
@@ -136,7 +136,7 @@ class EntregaForm(forms.ModelForm):
 
     filial_pedido = forms.ModelChoiceField(
         label='Filial',
-        queryset=Filial.objects.all(),
+        queryset=Filial.is_active.all(),
         widget=forms.Select(
             attrs={
                 'class': 'form-control',
@@ -147,7 +147,7 @@ class EntregaForm(forms.ModelForm):
 
     entregador = forms.ModelChoiceField(
         label='Entregador',
-        queryset=models.Entregador.objects.all(),
+        queryset=models.Entregador.is_active.all(),
         widget=forms.Select(
             attrs={
                 'class': 'form-control',
@@ -164,9 +164,9 @@ class EntregaForm(forms.ModelForm):
     def __init__(self, usuario, *args, **kwargs):
         super(EntregaForm, self).__init__(*args, **kwargs)
 
-        self.fields['filial_pedido'].queryset = Filial.objects.filter(id=usuario.filial.id)
+        self.fields['filial_pedido'].queryset = Filial.is_active.filter(id=usuario.filial.id)
         self.fields['filial_pedido'].initial = usuario.filial
-        self.fields['entregador'].queryset = models.Entregador.objects.filter(filial=usuario.filial)
+        self.fields['entregador'].queryset = models.Entregador.is_active.filter(filial=usuario.filial)
 
 
 class ConsultaEntregaForm(forms.Form):
@@ -194,7 +194,7 @@ class ConsultaEntregaForm(forms.Form):
 
     entregador = forms.ModelChoiceField(
         label='Entregador',
-        queryset=models.Entregador.objects.all(),
+        queryset=models.Entregador.is_active.all(),
         required=False,
         widget=forms.Select(
             attrs={
@@ -226,4 +226,4 @@ class ConsultaEntregaForm(forms.Form):
     def __init__(self, usuario, *args, **kwargs):
         super(ConsultaEntregaForm, self).__init__(*args, **kwargs)
 
-        self.fields['entregador'].queryset = models.Entregador.objects.filter(filial_id=usuario.filial.id)
+        self.fields['entregador'].queryset = models.Entregador.is_active.filter(filial_id=usuario.filial.id)
