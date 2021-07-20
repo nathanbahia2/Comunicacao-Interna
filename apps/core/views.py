@@ -265,10 +265,7 @@ def consulta_ocorrencias(request):
 
         if data_final and data_inicial:
             dias = None
-            filtros['data__range'] = [
-                utils.convert_date_to_datetime(data_inicial),
-                utils.convert_date_to_datetime(data_final)
-            ]
+            filtros['data__range'] = [data_inicial, data_final]
 
         if funcionario:
             filtros['funcionario'] = funcionario
