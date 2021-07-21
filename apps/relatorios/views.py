@@ -10,10 +10,10 @@ from apps.relatorios import forms
 def index(request):
     usuario = request.user.perfil.latest('id')
 
-    funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial).count()
-    elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial).count()
-    ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial).count()
-    entregas_count = Entrega.objects.filter(filial_pedido=usuario.filial).count()
+    funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial, ativo=True).count()
+    elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial, ativo=True).count()
+    ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial, ativo=True).count()
+    entregas_count = Entrega.objects.filter(filial_pedido=usuario.filial, ativo=True).count()
 
     form = forms.RelatorioForm()
 
