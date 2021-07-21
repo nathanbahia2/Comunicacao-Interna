@@ -14,7 +14,7 @@ def entregadores(request, pk=None):
     View que renderiza o formulário de cadastro e edição de entregadores.
     Lista todos os entregadores cadastrados.
     """
-    usuario = request.user.perfil
+    usuario = request.user.perfil.latest('id')
 
     instance = None
     msg_sucesso = 'Entregador cadastrado com sucesso'
@@ -67,7 +67,7 @@ def entregas(request, pk=None):
     """
     View que renderiza o formulário de cadastro e edição de entregas.
     """
-    usuario = request.user.perfil
+    usuario = request.user.perfil.latest('id')
 
     instance = None
     msg_sucesso = 'Entrega cadastrado com sucesso'
@@ -114,7 +114,7 @@ def consulta_entregas(request):
     """
     View que renderiza o formulário de consulta e lista entregas
     """
-    usuario = request.user.perfil
+    usuario = request.user.perfil.latest('id')
 
     consulta = False
 

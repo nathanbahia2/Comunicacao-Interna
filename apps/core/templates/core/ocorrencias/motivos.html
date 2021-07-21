@@ -63,8 +63,12 @@
                         <tr>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{% url 'core:edit_motivos' motivo.id %}" class="btn btn-sm btn-dark btn-edit-motivo" data-motivo="{{ motivo.id }}"><i class="fas fa-edit"></i></a>
-                                    <button class="btn btn-sm btn-danger btn-delete-motivo" data-motivo="{{ motivo.id }}"><i class="fas fa-trash"></i></button>
+                                    <a href="{% url 'core:edit_motivos' motivo.id %}" class="btn btn-sm btn-dark btn-edit-motivo" data-motivo="{{ motivo.id }}" data-toggle="tooltip" title="Editar motivo">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger btn-delete-motivo" data-motivo="{{ motivo.id }}" data-toggle="tooltip" title="Excluir motivo">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                             <td>{{ motivo.nome }}</td>
