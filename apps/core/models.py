@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.timezone import localtime
 
 
 class Base(models.Model):
@@ -13,9 +14,10 @@ class Base(models.Model):
 
     @property
     def cadastro(self):
+        dt = localtime(self.criacao)
         if self.usuario:
-            return f"{self.usuario.get_full_name()} em {self.criacao.strftime('%d/%m/%Y %H:%M')}"
-        return f"Usuário excluído em {self.criacao.strftime('%d/%m/%Y')}"
+            return f"{self.usuario.get_full_name()} em {dt.strftime('%d/%m/%Y %H:%M')}"
+        return f"Usuário excluído em {dt.strftime('%d/%m/%Y')}"
 
     @property
     def get_usuario_display(self):
