@@ -6,7 +6,7 @@ def usuario(request):
         return {}
 
     context = {'usuario': {}}
-    perfil = request.user.perfil.order_by('id').last()
+    perfil = request.user.perfil.latest('id')
 
     if perfil:
         context['usuario']['filial'] = perfil.filial

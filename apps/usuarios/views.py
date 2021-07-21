@@ -18,7 +18,7 @@ def login(request):
 
 @login_required
 def usuarios(request, pk=None):
-    usuario = request.user.perfil.latest('id')
+    usuario = request.user.perfil
     if not usuario.tipo == '2':
         return redirect('core:index')
 

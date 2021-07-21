@@ -19,7 +19,7 @@ def index(request):
 
 @login_required
 def cargos(request, pk=None):
-    usuario = request.user.perfil.latest('id')
+    usuario = request.user.perfil
 
     instance = None
     msg_sucesso = 'Cargo cadastrado com sucesso'
@@ -94,7 +94,7 @@ def filiais(request):
 
 @login_required
 def funcionarios(request, pk=None):
-    usuario = request.user.perfil.latest('id')
+    usuario = request.user.perfil
 
     instance = None
     msg_sucesso = 'Funcionário cadastrado com sucesso'
@@ -150,7 +150,7 @@ def funcionarios_cargo(request, pk):
     """
     View que exibe todos os funcionários com o mesmo cargo selecionado
     """
-    usuario = request.user.perfil.latest('id')
+    usuario = request.user.perfil
     cargo = models.Cargo.objects.get(pk=pk)
 
     query = models.Funcionario.objects.filter(
@@ -168,7 +168,7 @@ def funcionarios_cargo(request, pk):
 
 @login_required
 def motivos(request, pk=None):
-    usuario = request.user.perfil.latest('id')
+    usuario = request.user.perfil
 
     instance = None
     msg_sucesso = 'Motivo cadastrado com sucesso'
@@ -268,7 +268,7 @@ def ocorrencias(request, pk=None):
 
 @login_required
 def consulta_ocorrencias(request):
-    usuario = request.user.perfil.latest('id')
+    usuario = request.user.perfil
 
     consulta = False
 
@@ -359,7 +359,7 @@ def ocorrencias_funcionario(request, pk):
 
 @login_required
 def elogios(request, pk=None):
-    usuario = request.user.perfil.latest('id')
+    usuario = request.user.perfil
 
     instance = None
     msg_sucesso = 'Elogio cadastrado com sucesso'
@@ -416,7 +416,7 @@ def elogios(request, pk=None):
 
 @login_required
 def consulta_elogios(request):
-    usuario = request.user.perfil.latest('id')
+    usuario = request.user.perfil
 
     consulta = False
 
