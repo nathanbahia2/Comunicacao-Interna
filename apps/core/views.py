@@ -9,6 +9,7 @@ from django.contrib import messages
 from apps.entregas.models import Entregador, Entrega
 from apps.core import forms, utils, send_email
 from apps.core import models
+from apps.usuarios.models import Perfil
 
 
 @login_required
@@ -25,7 +26,7 @@ def cargos(request, pk=None):
     msg_erro = 'Falha ao cadastrar cargo'
 
     if pk:
-        instance = models.Cargo.is_active.get(pk=pk)
+        instance = models.Cargo.objects.get(pk=pk)
         msg_sucesso = 'Cargo editado com sucesso'
         msg_erro = 'Falha ao editar cargo'
 
@@ -54,7 +55,10 @@ def cargos(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Cargo.is_active.filter(filial=usuario.filial)
+        query = models.Cargo.objects.filter(
+            filial=usuario.filial,
+            ativo=True
+        )
 
     context = {
         'form': form,
@@ -83,7 +87,7 @@ def filiais(request):
 
     context = {
         'form': form,
-        'filiais': models.Filial.is_active.order_by('nome'),
+        'filiais': models.Filial.objects.order_by('nome'),
     }
     return render(request, 'core/filiais/filiais.html', context)   
 
@@ -97,7 +101,7 @@ def funcionarios(request, pk=None):
     msg_erro = 'Falha ao cadastrar funcionário'
 
     if pk:
-        instance = models.Funcionario.is_active.get(pk=pk)
+        instance = models.Funcionario.objects.get(pk=pk)
         msg_sucesso = 'Funcionário editado com sucesso'
         msg_erro = 'Falha ao editar funcionário'
 
@@ -128,7 +132,10 @@ def funcionarios(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Funcionario.is_active.filter(filial=usuario.filial)
+        query = models.Funcionario.objects.filter(
+            filial=usuario.filial,
+            ativo=True
+        )
 
     context = {
         'form': form,
@@ -147,7 +154,7 @@ def motivos(request, pk=None):
     msg_erro = 'Falha ao cadastrar motivo'
 
     if pk:
-        instance = models.Motivo.is_active.get(pk=pk)
+        instance = models.Motivo.objects.get(pk=pk)
         msg_sucesso = 'Motivo editado com sucesso'
         msg_erro = 'Falha ao editar motivo'
 
@@ -175,7 +182,10 @@ def motivos(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Motivo.is_active.filter(filial=usuario.filial)
+        query = models.Motivo.objects.filter(
+            filial=usuario.filial,
+            ativo=True
+        )
 
     context = {
         'form': form,
@@ -195,7 +205,7 @@ def ocorrencias(request, pk=None):
     msg_erro = 'Falha ao cadastrar ocorrência'
 
     if pk:
-        instance = models.Ocorrencia.is_active.get(pk=pk)
+        instance = models.Ocorrencia.objects.get(pk=pk)
         msg_sucesso = 'Ocorrência editada com sucesso'
         msg_erro = 'Falha ao editar ocorrência'
 
@@ -246,10 +256,11 @@ def consulta_ocorrencias(request):
 
     filtros = {
         'data__range': data_range,
-        'funcionario__filial': usuario.filial
+        'funcionario__filial': usuario.filial,
+        'ativo': True
     }
 
-    query = models.Ocorrencia.is_active.filter(**filtros).order_by('funcionario')
+    query = models.Ocorrencia.objects.filter(**filtros).order_by('funcionario')
 
     form = forms.ConsultaOcorrenciaForm(
         usuario=usuario,
@@ -277,7 +288,7 @@ def consulta_ocorrencias(request):
             filtros['motivo'] = motivo
 
         consulta = True
-        query = models.Ocorrencia.is_active.filter(**filtros)
+        query = models.Ocorrencia.objects.filter(**filtros)
 
     context = {
         'form': form,
@@ -292,7 +303,7 @@ def consulta_ocorrencias(request):
 @login_required
 def info_ocorrencias(request):
     ocorrencia_id = request.GET.get('ocorrencia')
-    ocorrencia = models.Ocorrencia.is_active.get(pk=ocorrencia_id)
+    ocorrencia = models.Ocorrencia.objects.get(pk=ocorrencia_id)
 
     json_ocorrencia = {
         'criacao': ocorrencia.criacao.isoformat(),
@@ -315,7 +326,7 @@ def elogios(request, pk=None):
     msg_erro = 'Falha ao cadastrar elogio'
 
     if pk:
-        instance = models.Elogio.is_active.get(pk=pk)
+        instance = models.Elogio.objects.get(pk=pk)
         msg_sucesso = 'Elogio editado com sucesso'
         msg_erro = 'Falha ao editar elogio'
 
@@ -350,7 +361,10 @@ def elogios(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Elogio.is_active.filter(funcionario__filial=usuario.filial)
+        query = models.Elogio.objects.filter(
+            funcionario__filial=usuario.filial,
+            ativo=True
+        )
 
     context = {
         'form': form,
@@ -371,10 +385,11 @@ def consulta_elogios(request):
 
     filtros = {
         'data__range': data_range,
-        'funcionario__filial': usuario.filial
+        'funcionario__filial': usuario.filial,
+        'ativo': True
     }
 
-    query = models.Elogio.is_active.filter(**filtros).order_by('funcionario')
+    query = models.Elogio.objects.filter(**filtros).order_by('funcionario')
 
     form = forms.ConsultaElogioForm(
         usuario=usuario,
@@ -402,7 +417,7 @@ def consulta_elogios(request):
             filtros['funcionario__cargo'] = cargo
 
         consulta = True
-        query = models.Elogio.is_active.filter(**filtros)
+        query = models.Elogio.objects.filter(**filtros)
 
     context = {
         'form': form,
@@ -417,7 +432,7 @@ def consulta_elogios(request):
 @login_required
 def info_elogios(request):
     elogio_id = request.GET.get('elogio')
-    elogio = models.Elogio.is_active.get(pk=elogio_id)
+    elogio = models.Elogio.objects.get(pk=elogio_id)
     json_elogio = {
         'criacao': elogio.criacao.isoformat(),
         'usuario': elogio.usuario.get_full_name(),
@@ -449,12 +464,20 @@ def delete_model_object(request):
             'email': models.EmailResponsaveis,
             'entrega': Entrega,
             'entregador': Entregador,
-            'usuarios': User
+            'usuarios': Perfil
         }[model_name]
 
-        obj = model.is_active.get(pk=obj_id)
-        obj.ativo = False
-        obj.save()
+        if model_name == 'usuarios':
+            perfil = Perfil.objects.filter(usuario__id=obj_id)
+            perfil.update(ativo=False)
+            usuario = User.objects.get(pk=obj_id)
+            usuario.is_active = False
+            usuario.save()
+
+        else:
+            obj = model.objects.get(pk=obj_id)
+            obj.ativo = False
+            obj.save()
 
         response = True
         messages.success(request, msg_sucesso)
@@ -485,7 +508,7 @@ def emails(request, pk=None):
     msg_erro = 'Falha ao cadastrar e-mail'
 
     if pk:
-        instance = models.EmailResponsaveis.is_active.get(pk=pk)
+        instance = models.EmailResponsaveis.objects.get(pk=pk)
         msg_sucesso = 'E-mail editado com sucesso'
         msg_erro = 'Falha ao editar e-mail'
 
@@ -524,7 +547,7 @@ def emails(request, pk=None):
 
     query = None
     if not instance:
-        query = models.EmailResponsaveis.is_active.all()
+        query = models.EmailResponsaveis.objects.filter(ativo=True)
 
     context = {
         'form': form,

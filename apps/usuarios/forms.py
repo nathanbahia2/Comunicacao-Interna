@@ -67,7 +67,7 @@ class UsuarioForm(forms.ModelForm):
 
     filial = forms.ModelChoiceField(
         label='Selecione a filial do usuário',
-        queryset=models.Filial.is_active.all(),
+        queryset=models.Filial.objects.all(),
         widget=forms.Select(
             attrs={
                 'class': 'form-control'
@@ -141,7 +141,7 @@ class UsuarioEditForm(forms.ModelForm):
 
     filial = forms.ModelChoiceField(
         label='Selecione a filial do usuário',
-        queryset=models.Filial.is_active.all(),
+        queryset=models.Filial.objects.all(),
         widget=forms.Select(
             attrs={
                 'class': 'form-control'

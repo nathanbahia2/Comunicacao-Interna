@@ -1,9 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Manager
-from django.utils import timezone
 
-from apps.core.models import Base, ObjAtivosManager
+from apps.core.models import Base
 
 
 class Entregador(Base):
@@ -12,7 +10,6 @@ class Entregador(Base):
     telefone = models.CharField(max_length=20, blank=True, null=True)
     veiculo = models.CharField(max_length=255, blank=True, null=True)
     placa = models.CharField(max_length=20, blank=True, null=True)
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return self.nome
@@ -35,7 +32,6 @@ class Entrega(Base):
     observacao_final = models.TextField(blank=True, null=True)
     usuario_recebimento = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='usuario_recebimento')
     entregador = models.ForeignKey(Entregador, on_delete=models.SET_NULL, null=True)
-    is_active = ObjAtivosManager()
 
     class Meta:
         ordering = ['saida_pedido']

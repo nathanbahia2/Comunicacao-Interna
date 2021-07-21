@@ -17,7 +17,7 @@ def entregadores(request, pk=None):
     msg_erro = 'Falha ao cadastrar entregador'
 
     if pk:
-        instance = models.Entregador.is_active.get(pk=pk)
+        instance = models.Entregador.objects.get(pk=pk)
         msg_sucesso = 'Entregador editado com sucesso'
         msg_erro = 'Falha ao editar entregador'
 
@@ -45,7 +45,7 @@ def entregadores(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Entregador.is_active.filter(filial=usuario.filial)
+        query = models.Entregador.objects.filter(filial=usuario.filial)
 
     context = {
         'form': form,
@@ -64,7 +64,7 @@ def entregas(request, pk=None):
     msg_erro = 'Falha ao cadastrar entrega'
 
     if pk:
-        instance = models.Entrega.is_active.get(pk=pk)
+        instance = models.Entrega.objects.get(pk=pk)
         msg_sucesso = 'Entrega editado com sucesso'
         msg_erro = 'Falha ao editar entrega'
 
@@ -106,14 +106,18 @@ def consulta_entregas(request):
     consulta = False
 
     dias = 30 if request.GET.get('dias') not in ['30', '60', '90', '120'] else request.GET.get('dias')
-    data_range = utils.get_data_range(dias)
+    data_range = utils.get_data_range(dias, convert=True)
 
+    exclude = {}
     filtros = {
         'saida_pedido__range': data_range,
-        'filial_pedido': usuario.filial
+        'filial_pedido': usuario.filial,
+        'ativo': True,
     }
 
-    query = models.Entrega.is_active.filter(**filtros).order_by('-criacao')
+    query = models.Entrega.objects.filter(
+        **filtros
+    ).order_by('recebimento_pedido', '-saida_pedido')
 
     form = forms.ConsultaEntregaForm(
         usuario=usuario,
@@ -126,6 +130,7 @@ def consulta_entregas(request):
         entregador = form.cleaned_data.get('entregador')
         pedido = form.cleaned_data.get('pedido')
         cliente = form.cleaned_data.get('cliente')
+        status = form.cleaned_data.get('status')
 
         if data_final and data_inicial:
             dias = None
@@ -143,10 +148,18 @@ def consulta_entregas(request):
         if cliente:
             filtros['nome_cliente__icontains'] = cliente
 
-        consulta = True
-        query = models.Entrega.is_active.filter(**filtros)
+        if status == '1':
+            filtros['usuario_recebimento'] = None
 
-        print(filtros)
+        if status == '2':
+            exclude['usuario_recebimento'] = None
+
+        consulta = True
+        query = models.Entrega.objects.filter(
+            **filtros
+        ).exclude(
+            **exclude
+        ).order_by('recebimento_pedido', '-saida_pedido')
 
     context = {
         'form': form,
@@ -161,7 +174,7 @@ def consulta_entregas(request):
 @login_required
 def info_entregas(request):
     entrega_id = request.GET.get('entrega')
-    entrega = models.Entrega.is_active.get(pk=entrega_id)
+    entrega = models.Entrega.objects.get(pk=entrega_id)
 
     json_entrega = {
         'cliente': entrega.nome_cliente,
@@ -185,7 +198,7 @@ def finaliza_entrega(request):
     recebimento_pedido = request.POST.get('recebimento_pedido')
     observacao_final = request.POST.get('observacao_final')
 
-    entrega = models.Entrega.is_active.get(pk=entrega_id)
+    entrega = models.Entrega.objects.get(pk=entrega_id)
 
     entrega.recebimento_pedido = recebimento_pedido
     entrega.observacao_final = observacao_final

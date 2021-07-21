@@ -69,9 +69,7 @@
                         <th>Data</th>
                         <th>Funcionário</th>
                         <th>Cargo</th>
-                        {% if usuario.administrador %}
-                            <th>Filial</th>
-                        {% endif %}
+                        <th>Filial</th>
                         <th>Motivo</th>
                         <th>Cadastro</th>
                     </tr>
@@ -83,17 +81,13 @@
                             <div class="btn-group">
                                 <button class="btn btn-sm btn-info btn-info-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}"><i class="fas fa-info-circle"></i></button>
                                 <a href="{% url 'core:edit_ocorrencias' ocorrencia.id %}" class="btn btn-sm btn-dark btn-edit-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}"><i class="fas fa-edit"></i></a>
-                                {% if usuario.administrador %}
-                                    <button class="btn btn-sm btn-danger btn-delete-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}"><i class="fas fa-trash"></i></button>
-                                {% endif %}
+                                <button class="btn btn-sm btn-danger btn-delete-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}"><i class="fas fa-trash"></i></button>
                             </div>
                         </td>
                         <td>{{ ocorrencia.data|date:'d/m/Y' }}</td>
                         <td>{{ ocorrencia.funcionario.nome }}</td>
                         <td>{{ ocorrencia.funcionario.cargo.nome }}</td>
-                        {% if usuario.administrador %}
-                            <td>{{ ocorrencia.funcionario.filial }}</td>
-                        {% endif %}
+                        <td>{{ ocorrencia.funcionario.filial }}</td>
                         <td>{{ ocorrencia.get_motivo_display }}</td>
                         <td>{{ ocorrencia.cadastro }}</td>
                     </tr>

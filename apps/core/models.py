@@ -2,11 +2,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 
-class ObjAtivosManager(models.Manager):
-    def get_queryset(self):
-        return super(ObjAtivosManager, self).get_queryset().filter(ativo=True)
-
-
 class Base(models.Model):
     usuario = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True)
     criacao = models.DateTimeField(auto_now_add=True)
@@ -32,7 +27,6 @@ class Base(models.Model):
 class Filial(Base):
     nome = models.CharField(max_length=255)
     cidade = models.CharField(max_length=255)
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return f'{self.nome} - {self.cidade}'
@@ -46,7 +40,6 @@ class Filial(Base):
 class Cargo(Base):
     nome = models.CharField(max_length=255)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return f'{self.nome}'
@@ -62,7 +55,6 @@ class Funcionario(Base):
     admissao = models.DateField(blank=True, null=True)
     cargo = models.ForeignKey(Cargo, on_delete=models.SET_NULL, null=True, related_name='funcionarios')
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE, related_name='funcionarios')
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return f'{self.nome} - {self.cargo}'
@@ -76,7 +68,6 @@ class Funcionario(Base):
 class Motivo(Base):
     nome = models.CharField(max_length=255)
     filial = models.ForeignKey(Filial, on_delete=models.CASCADE)
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return self.nome
@@ -92,7 +83,6 @@ class Ocorrencia(Base):
     motivo = models.ForeignKey(Motivo, on_delete=models.SET_NULL, null=True)
     data = models.DateField()
     observacao = models.TextField()
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return self.observacao or '---------'
@@ -113,7 +103,6 @@ class Elogio(Base):
     funcionario = models.ForeignKey(Funcionario, on_delete=models.CASCADE, related_name='elogios')
     data = models.DateField()
     observacao = models.TextField()
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return self.funcionario.nome
@@ -128,7 +117,6 @@ class EmailResponsaveis(Base):
     nome = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     filiais = models.ManyToManyField(Filial)
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return self.nome
@@ -147,7 +135,6 @@ class EmailNaoEntregue(models.Model):
     mensagem = models.TextField()
     retorno = models.TextField()
     ativo = models.BooleanField(default=True)
-    is_active = ObjAtivosManager()
 
     def __str__(self):
         return self.assunto

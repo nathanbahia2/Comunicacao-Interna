@@ -67,7 +67,7 @@ def usuarios(request, pk=None):
                 obj = form.save(commit=False)
                 obj.set_password(form.cleaned_data.get('password'))
                 obj.save()
-                models.Perfil.is_active.create(
+                models.Perfil.objects.create(
                     usuario=obj,
                     filial=form.cleaned_data.get('filial'),
                     tipo=form.cleaned_data.get('tipo')
@@ -81,9 +81,11 @@ def usuarios(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Perfil.is_active.filter(
-            filial=usuario.filial, tipo='1'
-        ).exclude(id=usuario.usuario.id).order_by('usuario__first_name')
+        query = models.Perfil.objects.filter(
+            filial=usuario.filial,
+            ativo=True,
+            tipo='1'
+        )
 
     context = {
         'form': form,
@@ -91,28 +93,6 @@ def usuarios(request, pk=None):
         'usuarios': query
     }
     return render(request, 'registration/cadastro.html', context)
-
-
-@login_required
-@csrf_exempt
-def delete_usuarios(request):
-    response = False
-    try:
-        usuario_id = request.POST.get('data')
-        usuario = User.objects.get(pk=usuario_id)
-
-        models.Perfil.is_active.filter(
-            usuario=usuario
-        ).delete()
-        usuario.delete()
-
-        response = True
-        messages.error(request, 'Usuário excluído com sucesso')
-
-    except Exception as e:
-        messages.error(request, f'Falha ao excluir usuário: {e}')
-
-    return JsonResponse(response, safe=False)
 
 
 @login_required

@@ -53,9 +53,7 @@
                         <tr>
                             <th>Ações</th>
                             <th>Cargo</th>
-                            {% if usuario.administrador %}
-                                <th>Filial</th>
-                            {% endif %}
+                            <th>Filial</th>
                             <th>Funcionários</th>
                             <th>Cadastro</th>
                         </tr>
@@ -68,17 +66,13 @@
                                     <a href="{% url 'core:edit_cargos' cargo.id %}" class="btn btn-sm btn-dark btn-edit-cargo" data-cargo="{{ cargo.id }}" data-toggle="tooltip" title="Editar cargo">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    {% if usuario.administrador %}
-                                        <button class="btn btn-sm btn-danger btn-delete-cargo" data-cargo="{{ cargo.id }}" data-toggle="tooltip" title="Excluir cargo">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    {% endif %}
+                                    <button class="btn btn-sm btn-danger btn-delete-cargo" data-cargo="{{ cargo.id }}" data-toggle="tooltip" title="Excluir cargo">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                             <td>{{ cargo.nome}}</td>
-                            {% if usuario.administrador %}
-                                <td>{{ cargo.filial }}</td>
-                            {% endif %}
+                            <td>{{ cargo.filial }}</td>
                             <td>{{ cargo.funcionarios.count}}</td>
                             <td>{{ cargo.cadastro }}</td>
                         </tr>

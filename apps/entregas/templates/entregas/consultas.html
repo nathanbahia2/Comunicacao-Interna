@@ -40,6 +40,12 @@
                     {{ form.cliente }}
                 </div>
             </div>
+            <div class="col-12 col-sm-6 px-0 pl-sm-3">
+                <div class="form-group mb-2">
+                    <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+                    {{ form.status }}
+                </div>
+            </div>
             <div class="col-12 my-3 px-0">
                 <button type="reset" class="btn btn-secondary">
                     <i class="fas fa-eraser"></i> Limpar
@@ -60,8 +66,8 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Ações</th>
-                        <th>Nome</th>
-                        <th>Endreço</th>
+                        <th>Cliente</th>
+                        <th>Endereço</th>
                         <th>Pedido</th>
                         <th>Valor</th>
                         <th>Entregador</th>
@@ -89,7 +95,7 @@
                             <td>{{ entrega.valor_pedido }}</td>
                             <td>{{ entrega.entregador.nome }}</td>
                             <td>{{ entrega.saida_pedido|date:'d/m/Y H:i' }}</td>
-                            <td>{{ entrega.recebimento_pedido|date:'d/m/Y H:i' }}</td>
+                            <td>{{ entrega.recebimento }}</td>
                             <td>{{ entrega.cadastro }}</td>
                         </tr>
                     {% endfor %}

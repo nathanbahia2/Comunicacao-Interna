@@ -66,9 +66,7 @@
                             <th>Ações</th>
                             <th>Nome</th>
                             <th>Cargo</th>
-                            {% if usuario.administrador %}
-                                <th>Filial</th>
-                            {% endif %}
+                            <th>Filial</th>
                             <th>Admissão</th>
                             <th>Últ. Ocorrência</th>
                             <th>Cadastro</th>
@@ -80,16 +78,12 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{% url 'core:edit_funcionarios' funcionario.id %}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Editar funcionário"><i class="fas fa-edit"></i></a>
-                                        {% if usuario.administrador %}
-                                            <button class="btn btn-sm btn-danger btn-delete-funcionario" data-funcionario="{{ funcionario.id }}" data-toggle="tooltip" title="Excluir funcionário"><i class="fas fa-trash"></i></button>
-                                        {% endif %}
+                                        <button class="btn btn-sm btn-danger btn-delete-funcionario" data-funcionario="{{ funcionario.id }}" data-toggle="tooltip" title="Excluir funcionário"><i class="fas fa-trash"></i></button>
                                     </div>
                                 </td>
                                 <td>{{ funcionario.nome }}</td>
                                 <td>{{ funcionario.cargo.nome }}</td>
-                                {% if usuario.administrador %}
-                                    <td>{{ funcionario.filial }}</td>
-                                {% endif %}
+                                <td>{{ funcionario.filial }}</td>
                                 <td>{{ funcionario.admissao|date:'d/m/Y' }}</td>
                                 {% if funcionario.ocorrencias.last.observacao %}
                                     <td>{{ funcionario.ocorrencias.last.observacao|truncatewords:20 }} em {{ funcionario.ocorrencias.last.criacao|date:'d/m/Y' }}</td>

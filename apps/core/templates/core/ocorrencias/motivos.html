@@ -54,9 +54,7 @@
                         <tr>
                             <th>Ações</th>
                             <th>Motivo</th>
-                            {% if usuario.administrador %}
-                                <th>Filial</th>
-                            {% endif %}
+                            <th>Filial</th>
                             <th>Cadastro</th>
                         </tr>
                     </thead>
@@ -65,9 +63,7 @@
                         <tr>
                             <td>
                                 <div class="btn-group">
-                                    {% if usuario.administrador %}
-                                        <a href="{% url 'core:edit_motivos' motivo.id %}" class="btn btn-sm btn-dark btn-edit-motivo" data-motivo="{{ motivo.id }}"><i class="fas fa-edit"></i></a>
-                                    {% endif %}
+                                    <a href="{% url 'core:edit_motivos' motivo.id %}" class="btn btn-sm btn-dark btn-edit-motivo" data-motivo="{{ motivo.id }}"><i class="fas fa-edit"></i></a>
                                     <button class="btn btn-sm btn-danger btn-delete-motivo" data-motivo="{{ motivo.id }}"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>

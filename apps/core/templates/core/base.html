@@ -125,8 +125,10 @@
                         Administração
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropAdm">
-                        <a class="dropdown-item" href="{% url 'usuarios:usuarios' %}">Usuários</a>
-                        <a class="dropdown-item" href="{% url 'core:emails' %}">E-mails</a>
+                        {% if usuario.administrador %}
+                            <a class="dropdown-item" href="{% url 'usuarios:usuarios' %}">Usuários</a>
+                            <a class="dropdown-item" href="{% url 'core:emails' %}">E-mails</a>
+                        {% endif %}
                         <a class="dropdown-item" href="{% url 'relatorios:index' %}">Relatórios</a>
                     </div>
                 </li>

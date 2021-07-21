@@ -63,9 +63,7 @@
                         <th>Data</th>
                         <th>Funcionário</th>
                         <th>Cargo</th>
-                        {% if usuario.administrador %}
-                            <th>Filial</th>
-                        {% endif %}
+                        <th>Filial</th>
                         <th>Cadastro</th>
                     </tr>
                 </thead>
@@ -76,17 +74,13 @@
                                 <div class="btn-group">
                                     <button class="btn btn-sm btn-info btn-info-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-info-circle"></i></button>
                                     <a href="{% url 'core:edit_elogios' elogio.id %}" class="btn btn-sm btn-dark btn-edit-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-edit"></i></a>
-                                    {% if usuario.administrador %}
-                                        <button class="btn btn-sm btn-danger btn-delete-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-trash"></i></button>
-                                    {% endif %}
+                                    <button class="btn btn-sm btn-danger btn-delete-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>
                             <td>{{ elogio.data|date:'d/m/Y' }}</td>
                             <td>{{ elogio.funcionario.nome }}</td>
                             <td>{{ elogio.funcionario.cargo.nome }}</td>
-                            {% if usuario.administrador %}
-                                <td>{{ elogio.funcionario.filial }}</td>
-                            {% endif %}
+                            <td>{{ elogio.funcionario.filial }}</td>
                             <td>{{ elogio.cadastro }}</td>
                         </tr>
                     {% endfor %}
