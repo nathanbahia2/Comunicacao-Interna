@@ -10,6 +10,10 @@ from apps.entregas import forms, models
 
 @login_required
 def entregadores(request, pk=None):
+    """
+    View que renderiza o formulário de cadastro e edição de entregadores.
+    Lista todos os entregadores cadastrados.
+    """
     usuario = request.user.perfil.latest('id')
 
     instance = None
@@ -45,7 +49,10 @@ def entregadores(request, pk=None):
 
     query = None
     if not instance:
-        query = models.Entregador.objects.filter(filial=usuario.filial)
+        query = models.Entregador.objects.filter(
+            filial=usuario.filial,
+            ativo=True
+        )
 
     context = {
         'form': form,
@@ -57,6 +64,9 @@ def entregadores(request, pk=None):
 
 @login_required
 def entregas(request, pk=None):
+    """
+    View que renderiza o formulário de cadastro e edição de entregas.
+    """
     usuario = request.user.perfil.latest('id')
 
     instance = None
@@ -101,6 +111,9 @@ def entregas(request, pk=None):
 
 @login_required
 def consulta_entregas(request):
+    """
+    View que renderiza o formulário de consulta e lista entregas
+    """
     usuario = request.user.perfil.latest('id')
 
     consulta = False
@@ -173,6 +186,9 @@ def consulta_entregas(request):
 
 @login_required
 def info_entregas(request):
+    """
+    Função ajax que tras as informações de entrega
+    """
     entrega_id = request.GET.get('entrega')
     entrega = models.Entrega.objects.get(pk=entrega_id)
 
@@ -182,11 +198,12 @@ def info_entregas(request):
         'entregador': entrega.entregador.nome,
         'pedido': entrega.numero_pedido,
         'valor': entrega.valor_pedido,
-        'saida': entrega.saida_pedido.strftime("%d/%m/%Y %H:%M") if entrega.saida_pedido else "",
+        'saida': entrega.saida_pedido.strftime("%d/%m/%Y %H:%M"),
         'recebimento': entrega.recebimento,
         'cadastro': entrega.cadastro,
         'detalhes': entrega.detalhes_pedido if entrega.detalhes_pedido else "",
-        'observacao': entrega.observacao_final if entrega.observacao_final else ""
+        'observacao': entrega.observacao_final if entrega.observacao_final else "",
+        'recebida': entrega.recebida
     }
     return JsonResponse(json_entrega, safe=False)
 

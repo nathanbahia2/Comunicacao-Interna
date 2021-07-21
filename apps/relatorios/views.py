@@ -10,14 +10,10 @@ from apps.relatorios import forms
 def index(request):
     usuario = request.user.perfil.latest('id')
 
-    if usuario.tipo == '1':
-        funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial).count()
-        elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial).count()
-        ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial).count()
-    else:
-        funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial).count()
-        elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial).count()
-        ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial).count()
+    funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial).count()
+    elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial).count()
+    ocorrencias_count = models.Ocorrencia.objects.filter(funcionario__filial=usuario.filial).count()
+    entregas_count = Entrega.objects.filter(filial_pedido=usuario.filial).count()
 
     form = forms.RelatorioForm()
 
@@ -25,6 +21,7 @@ def index(request):
         'funcionarios_count': funcionarios_count,
         'elogios_count': elogios_count,
         'ocorrencias_count': ocorrencias_count,
+        'entregas_count': entregas_count,
         'form': form
     }
     return render(request, 'relatorios/index.html', context)

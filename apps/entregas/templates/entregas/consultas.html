@@ -81,11 +81,11 @@
                         <tr>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{% url "entregas:edit_entregas" entrega.id %}" class="btn btn-sm btn-dark"><i class="fas fa-edit"></i></a>
                                     {% if not entrega.recebida %}
                                         <button class="btn btn-sm btn-success btn-finaliza-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-check"></i></button>
                                     {% endif %}
                                     <button class="btn btn-sm btn-info btn-info-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-info-circle"></i></button>
+                                    <a href="{% url "entregas:edit_entregas" entrega.id %}" class="btn btn-sm btn-dark"><i class="fas fa-edit"></i></a>
                                     <button class="btn btn-sm btn-danger btn-delete-entrega" data-entrega="{{ entrega.id }}"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>

@@ -12,22 +12,28 @@
         {% csrf_token %}
 
         <div class="row mx-0 mt-3">
-            <div class="col-12 col-sm-6 col-md-4 mb-3 px-0 pr-sm-3">
+            <div class="col-12 col-sm-6 col-md-3 mb-3 px-0 pr-sm-3">
                 <div class="card bg-dark shadow p-3">
                     <h5 class="card-title text-warning">Funcionários</h5>
                     <h1 class="text-light">{{ funcionarios_count }}</h1>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 mb-3 px-0 px-sm-3">
+            <div class="col-12 col-sm-6 col-md-3 mb-3 px-0 px-sm-3">
                 <div class="card bg-dark shadow p-3">
                     <h5 class="card-title text-warning">Elogios</h5>
                     <h1 class="text-light">{{ elogios_count }}</h1>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 mb-3 px-0 pl-sm-3">
+            <div class="col-12 col-sm-6 col-md-3 mb-3 px-0px-sm-3">
                 <div class="card bg-dark shadow p-3">
                     <h5 class="card-title text-warning">Ocorrências</h5>
                     <h1 class="text-light">{{ ocorrencias_count }}</h1>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 mb-3 px-0 pl-sm-3">
+                <div class="card bg-dark shadow p-3">
+                    <h5 class="card-title text-warning">Entregas</h5>
+                    <h1 class="text-light">{{ entregas_count }}</h1>
                 </div>
             </div>
         </div>

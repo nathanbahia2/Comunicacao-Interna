@@ -448,9 +448,6 @@ def info_elogios(request):
 @require_POST
 @csrf_exempt
 def delete_model_object(request):
-    msg_sucesso = request.POST.get('msg_sucesso')
-    msg_erro = request.POST.get('msg_erro')
-
     try:
         obj_id = request.POST.get('data')
         model_name = request.POST.get('model')
@@ -480,11 +477,10 @@ def delete_model_object(request):
             obj.save()
 
         response = True
-        messages.success(request, msg_sucesso)
 
     except Exception as e:
+        print(e)
         response = False
-        messages.error(request, f'{msg_erro}: {e}')
 
     return JsonResponse(response, safe=False)
 
