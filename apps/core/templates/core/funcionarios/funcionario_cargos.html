@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h5>{{ cargo }}</h5>
+    <p>{{ funcionarios.count }} funcionário{{ funcionarios|pluralize }} encontrado{{ funcionarios|pluralize }}</p>
+
+    {% if funcionarios %}
+        <div class="table-responsive mt-5">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ações</th>
+                        <th>Nome</th>
+                        <th>Filial</th>
+                        <th>Admissão</th>
+                        <th>Últ. Ocorrência</th>
+                        <th>Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for funcionario in funcionarios %}
+                        <tr>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{% url 'core:elogios_funcionario' funcionario.id %}" class="btn btn-sm btn-success" data-toggle="tooltip" title="Elogios funcionário">
+                                        <i class="fas fa-thumbs-up"></i>
+                                    </a>
+                                    <a href="{% url 'core:ocorrencias_funcionario' funcionario.id %}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ocorrências funcionário">
+                                        <i class="fas fa-thumbs-down"></i>
+                                    </a>
+                                    <a href="{% url 'core:edit_funcionarios' funcionario.id %}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Editar funcionário">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger btn-delete-funcionario" data-funcionario="{{ funcionario.id }}" data-toggle="tooltip" title="Excluir funcionário">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>{{ funcionario.nome }}</td>
+                            <td>{{ funcionario.cargo.nome }}</td>
+                            <td>{{ funcionario.admissao|date:'d/m/Y' }}</td>
+                            {% if funcionario.ocorrencias.last.observacao %}
+                                <td>{{ funcionario.ocorrencias.last.observacao|truncatewords:20 }} em {{ funcionario.ocorrencias.last.criacao|date:'d/m/Y' }}</td>
+                            {% else %}
+                                <td>- - -</td>
+                            {% endif %}
+                            <td>{{ funcionario.cadastro }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-warning mt-5">
+            Nenhum funcionário cadastrado até o momento
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

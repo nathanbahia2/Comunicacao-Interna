@@ -58,6 +58,9 @@
     </form>
 
     {% if not instance %}
+
+        <p>{{ funcionarios.count }} funcionário{{ funcionarios|pluralize }} cadastrado{{ funcionarios|pluralize }}</p>
+
         {% if funcionarios %}
             <div class="table-responsive mt-5">
                 <table class="table table-bordered text-center">
@@ -77,8 +80,18 @@
                             <tr>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{% url 'core:edit_funcionarios' funcionario.id %}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Editar funcionário"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-danger btn-delete-funcionario" data-funcionario="{{ funcionario.id }}" data-toggle="tooltip" title="Excluir funcionário"><i class="fas fa-trash"></i></button>
+                                        <a href="{% url 'core:elogios_funcionario' funcionario.id %}" class="btn btn-sm btn-success" data-toggle="tooltip" title="Elogios funcionário">
+                                            <i class="fas fa-thumbs-up"></i>
+                                        </a>
+                                        <a href="{% url 'core:ocorrencias_funcionario' funcionario.id %}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ocorrências funcionário">
+                                            <i class="fas fa-thumbs-down"></i>
+                                        </a>
+                                        <a href="{% url 'core:edit_funcionarios' funcionario.id %}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Editar funcionário">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-danger btn-delete-funcionario" data-funcionario="{{ funcionario.id }}" data-toggle="tooltip" title="Excluir funcionário">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </td>
                                 <td>{{ funcionario.nome }}</td>

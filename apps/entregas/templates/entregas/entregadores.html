@@ -66,6 +66,9 @@
     </form>
 
     {% if not instance %}
+
+        <p>{{ entregadores.count }} entregador{{ entregadores|pluralize }} cadastrado{{ entregadores|pluralize }}</p>
+
         {% if entregadores %}
             <div class="table-responsive mt-5">
                 <table class="table table-bordered text-center">
@@ -84,8 +87,12 @@
                             <tr>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{% url "entregas:edit_entregadores" entregador.id %}" class="btn btn-sm btn-dark btn-edit-usuario" data-entregador="{{ entregador.id }}"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-danger btn-delete-entregador" data-entregador="{{ entregador.id }}"><i class="fas fa-trash"></i></button>
+                                        <a href="{% url "entregas:edit_entregadores" entregador.id %}" class="btn btn-sm btn-dark" data-entregador="{{ entregador.id }}" data-toggle="tooltip" title="Editar entregador">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-danger btn-delete-entregador" data-entregador="{{ entregador.id }}" data-toggle="tooltip" title="Excluir entregador">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </td>
                                 <td>{{ entregador.nome }}</td>

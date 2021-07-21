@@ -134,7 +134,7 @@
                 </li>
             </ul>
             {% if usuario.administrador %}
-                <div class="mr-sm-5">
+                <div class="mr-sm-5 mt-3 mt-sm-0">
                     <form action="{% url "core:altera_filial" %}" method="post" id="formFilial">
                         {% csrf_token %}
                         <div class="form group">
@@ -148,7 +148,7 @@
                     </form>
                 </div>
             {% endif %}
-            <div class="text-light text-sm-right">
+            <div class="text-light text-center text-sm-right mt-3 mt-sm-0">
                 <b>{{ request.user.get_full_name|upper }}</b>
                 <a class='btn btn-sm ml-2' href="{% url 'usuarios:logout' %}" data-toggle="tooltip" title="Sair do sistema">
                     <i class="fas fa-power-off text-warning"></i>

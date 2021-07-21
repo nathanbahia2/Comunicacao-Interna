@@ -51,6 +51,13 @@ class Cargo(Base):
         verbose_name_plural = 'Cargos'
         ordering = ['nome']
 
+    @property
+    def count_funcionarios(self):
+        return Funcionario.objects.filter(
+            cargo=self,
+            ativo=True
+        ).count()
+
 
 class Funcionario(Base):
     nome = models.CharField(max_length=255)

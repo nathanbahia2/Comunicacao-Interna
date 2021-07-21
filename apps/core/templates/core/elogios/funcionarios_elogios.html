@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+
+    <h5>{{ funcionario }}</h5>
+    <p>{{ elogios.count }} elogio{{ elogios|pluralize }} encontrado{{ elogios|pluralize }}</p>
+
+    {% if elogios %}
+        <div class="table-responsive mt-5">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ações</th>
+                        <th>Data</th>
+                        <th>Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for elogio in elogios %}
+                        <tr>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-info btn-info-elogio" data-elogio="{{ elogio.id }}" data-toggle="tooltip" title="Mais informações">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    <a href="{% url 'core:edit_elogios' elogio.id %}" class="btn btn-sm btn-dark btn-edit-elogio" data-elogio="{{ elogio.id }}" data-toggle="tooltip" title="Editar elogio">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger btn-delete-elogio" data-elogio="{{ elogio.id }}" data-toggle="tooltip" title="Excluir elogio">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>{{ elogio.data|date:'d/m/Y' }}</td>
+                            <td>{{ elogio.cadastro }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

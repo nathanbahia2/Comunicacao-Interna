@@ -51,6 +51,8 @@
         </div>
     </form>
 
+    <p>{{ elogios.count }} elogio{{ elogios|pluralize }} cadastrado{{ elogios|pluralize }}</p>
+
     {% if elogios %}
 
         {% include 'core/utils/consulta_range_dias.html' %}
@@ -72,9 +74,15 @@
                         <tr>
                             <td>
                                 <div class="btn-group">
-                                    <button class="btn btn-sm btn-info btn-info-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-info-circle"></i></button>
-                                    <a href="{% url 'core:edit_elogios' elogio.id %}" class="btn btn-sm btn-dark btn-edit-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-edit"></i></a>
-                                    <button class="btn btn-sm btn-danger btn-delete-elogio" data-elogio="{{ elogio.id }}"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-info btn-info-elogio" data-elogio="{{ elogio.id }}" data-toggle="tooltip" title="Mais informações">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    <a href="{% url 'core:edit_elogios' elogio.id %}" class="btn btn-sm btn-dark btn-edit-elogio" data-elogio="{{ elogio.id }}" data-toggle="tooltip" title="Editar elogio">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger btn-delete-elogio" data-elogio="{{ elogio.id }}" data-toggle="tooltip" title="Excluir elogio">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                             <td>{{ elogio.data|date:'d/m/Y' }}</td>

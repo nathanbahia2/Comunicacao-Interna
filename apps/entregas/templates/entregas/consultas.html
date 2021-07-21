@@ -57,6 +57,8 @@
         </div>
     </form>
 
+    <p>{{ entregas.count }} entrega{{ entregas|pluralize }} cadastradas{{ entregas|pluralize }}</p>
+
     {% if entregas %}
 
         {% include 'core/utils/consulta_range_dias.html' %}

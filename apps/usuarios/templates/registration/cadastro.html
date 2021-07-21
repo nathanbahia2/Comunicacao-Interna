@@ -74,6 +74,9 @@
     </form>
 
     {% if not instance %}
+
+        <p>{{ usuarios.count }} usuário{{ usuarios|pluralize }} cadastro{{ usuarios|pluralize }}</p>
+
         {% if usuarios %}
             <div class="table-responsive mt-5">
                 <table class="table table-bordered text-center">
@@ -91,9 +94,15 @@
                             <tr>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{% url "usuarios:edit_usuarios" u.usuario.id %}" class="btn btn-sm btn-dark btn-edit-usuario" data-usuario="{{ u.id }}"><i class="fas fa-edit"></i></a>
-                                        <button class="btn btn-sm btn-info btn-password-usuario" data-usuario="{{ u.usuario.id }}"><i class="fas fa-key"></i></button>
-                                        <button class="btn btn-sm btn-danger btn-delete-usuario" data-usuario="{{ u.usuario.id }}"><i class="fas fa-trash"></i></button>
+                                        <a href="{% url "usuarios:edit_usuarios" u.usuario.id %}" class="btn btn-sm btn-dark btn-edit-usuario" data-usuario="{{ u.id }}" data-toggle="tooltip" title="Editar usuário">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-info btn-password-usuario" data-usuario="{{ u.usuario.id }}" data-toggle="tooltip" title="Alterar senha">
+                                            <i class="fas fa-key"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger btn-delete-usuario" data-usuario="{{ u.usuario.id }}" data-toggle="tooltip" title="Excluir usuário">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </td>
                                 <td>{{ u.usuario.get_full_name }}</td>

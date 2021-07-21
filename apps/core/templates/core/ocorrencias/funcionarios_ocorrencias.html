@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+
+    <h5>{{ funcionario }}</h5>
+    <p>{{ ocorrencias.count }} ocorrência{{ ocorrencias|pluralize }} encontrada{{ ocorrencias|pluralize }}</p>
+
+    {% if ocorrencias %}
+        <div class="table-responsive mt-5">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ações</th>
+                        <th>Data</th>
+                        <th>Motivo</th>
+                        <th>Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    {% for ocorrencia in ocorrencias %}
+                        <tr>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-info btn-info-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}" data-toggle="tooltip" title="Mais informações">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    <a href="{% url 'core:edit_ocorrencias' ocorrencia.id %}" class="btn btn-sm btn-dark btn-edit-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}" data-toggle="tooltip" title="Editar ocorrência">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger btn-delete-ocorrencia" data-ocorrencia="{{ ocorrencia.id }}" data-toggle="tooltip" title="Excluir ocorrência">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>{{ ocorrencia.data|date:'d/m/Y' }}</td>
+                            <td>{{ ocorrencia.get_motivo_display }}</td>
+                            <td>{{ ocorrencia.cadastro }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

@@ -146,6 +146,27 @@ def funcionarios(request, pk=None):
 
 
 @login_required
+def funcionarios_cargo(request, pk):
+    """
+    View que exibe todos os funcionários com o mesmo cargo selecionado
+    """
+    usuario = request.user.perfil.latest('id')
+    cargo = models.Cargo.objects.get(pk=pk)
+
+    query = models.Funcionario.objects.filter(
+        filial=usuario.filial,
+        cargo=cargo,
+        ativo=True
+    )
+
+    context = {
+        'cargo': cargo,
+        'funcionarios': query
+    }
+    return render(request, 'core/funcionarios/funcionario_cargos.html', context)
+
+
+@login_required
 def motivos(request, pk=None):
     usuario = request.user.perfil.latest('id')
 
@@ -318,6 +339,25 @@ def info_ocorrencias(request):
 
 
 @login_required
+def ocorrencias_funcionario(request, pk):
+    """
+    View que lista todas as ocorrências de um determinado funcionário
+    """
+    funcionario = models.Funcionario.objects.get(pk=pk)
+
+    query = models.Ocorrencia.objects.filter(
+        funcionario=funcionario,
+        ativo=True
+    )
+
+    context = {
+        'funcionario': funcionario,
+        'ocorrencias': query
+    }
+    return render(request, 'core/ocorrencias/funcionarios_ocorrencias.html', context)
+
+
+@login_required
 def elogios(request, pk=None):
     usuario = request.user.perfil.latest('id')
 
@@ -442,6 +482,25 @@ def info_elogios(request):
         'observacao': elogio.observacao
     }
     return JsonResponse(json_elogio, safe=False)
+
+
+@login_required
+def elogios_funcionario(request, pk):
+    """
+    View que lista todas as ocorrências de um determinado funcionário
+    """
+    funcionario = models.Funcionario.objects.get(pk=pk)
+
+    query = models.Elogio.objects.filter(
+        funcionario=funcionario,
+        ativo=True
+    )
+
+    context = {
+        'funcionario': funcionario,
+        'elogios': query
+    }
+    return render(request, 'core/elogios/funcionarios_elogios.html', context)
 
 
 @login_required

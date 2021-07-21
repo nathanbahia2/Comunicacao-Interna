@@ -19,16 +19,19 @@ urlpatterns = [
 
     path('funcionarios', views.funcionarios, name='funcionarios'),
     path('funcionarios/edit/<int:pk>/', views.funcionarios, name='edit_funcionarios'),
+    path('funcionarios/cargo/<int:pk>/', views.funcionarios_cargo, name='funcionarios_cargo'),
 
     path('ocorrencias', views.ocorrencias, name='ocorrencias'),
     path('ocorrencias/consulta', views.consulta_ocorrencias, name='consulta_ocorrencias'),
     path('ocorrencias/info', views.info_ocorrencias, name='info_ocorrencias'),
     path('ocorrencias/edit/<int:pk>/', views.ocorrencias, name='edit_ocorrencias'),
+    path('ocorrencias/funcionario/<int:pk>/', views.ocorrencias_funcionario, name='ocorrencias_funcionario'),
 
     path('elogios', views.elogios, name='elogios'),
     path('elogios/consulta', views.consulta_elogios, name='consulta_elogios'),
     path('elogios/info', views.info_elogios, name='info_elogios'),
     path('elogios/edit/<int:pk>/', views.elogios, name='edit_elogios'),
+    path('elogios/funcionario/<int:pk>/', views.elogios_funcionario, name='elogios_funcionario'),
 
     path('delete/obj/', views.delete_model_object),
 

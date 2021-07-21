@@ -46,6 +46,9 @@
     </form>
 
     {% if not instance %}
+
+        <p>{{ cargos.count }} cargo{{ cargos|pluralize }} cadastrado{{ cargos|pluralize }}</p>
+
         {% if cargos %}
             <div class="table-responsive mt-5">
                 <table class="table table-bordered text-center">
@@ -71,9 +74,11 @@
                                     </button>
                                 </div>
                             </td>
-                            <td>{{ cargo.nome}}</td>
+                            <td>
+                                <a href="{% url 'core:funcionarios_cargo' cargo.id %}">{{ cargo.nome }}</a>
+                            </td>
                             <td>{{ cargo.filial }}</td>
-                            <td>{{ cargo.funcionarios.count}}</td>
+                            <td>{{ cargo.count_funcionarios }}</td>
                             <td>{{ cargo.cadastro }}</td>
                         </tr>
                         {% endfor %}
