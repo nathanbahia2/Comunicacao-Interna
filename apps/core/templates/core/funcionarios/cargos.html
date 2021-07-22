@@ -30,7 +30,7 @@
             </div>
             <div class="col-12 my-3 px-0">
                 {% if instance %}
-                    <a href="{% url "core:cargos" %}" type="reset" class="btn btn-secondary">
+                    <a href="javascript:history.back()" type="reset" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Cancelar
                     </a>
                 {% else %}
@@ -47,7 +47,7 @@
 
     {% if not instance %}
 
-        <p>{{ cargos.count }} cargo{{ cargos|pluralize }} cadastrado{{ cargos|pluralize }}</p>
+        <p class="bg-warning p-3">{{ cargos.count }} cargo{{ cargos|pluralize }} cadastrado{{ cargos|pluralize }}</p>
 
         {% if cargos %}
             <div class="table-responsive mt-5">
@@ -66,6 +66,9 @@
                         <tr>
                             <td>
                                 <div class="btn-group">
+                                    <a href="{% url 'core:funcionarios_cargo' cargo.id %}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Exibir funcionários do cargo">
+                                        <i class="fas fa-user-friends"></i>
+                                    </a>
                                     <a href="{% url 'core:edit_cargos' cargo.id %}" class="btn btn-sm btn-dark btn-edit-cargo" data-cargo="{{ cargo.id }}" data-toggle="tooltip" title="Editar cargo">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -74,9 +77,7 @@
                                     </button>
                                 </div>
                             </td>
-                            <td>
-                                <a href="{% url 'core:funcionarios_cargo' cargo.id %}">{{ cargo.nome }}</a>
-                            </td>
+                            <td>{{ cargo.nome }}</td>
                             <td>{{ cargo.filial }}</td>
                             <td>{{ cargo.count_funcionarios }}</td>
                             <td>{{ cargo.cadastro }}</td>

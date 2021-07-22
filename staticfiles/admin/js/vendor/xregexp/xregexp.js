@@ -3018,12 +3018,12 @@ function hex(dec) {
 }
 
 /**
- * Returns the first index at which a given value can be found in an array.
+ * Returns the first site at which a given value can be found in an array.
  *
  * @private
  * @param {Array} array Array to search.
  * @param {*} value Value to locate in the array.
- * @returns {Number} Zero-based index at which the item is found, or -1.
+ * @returns {Number} Zero-based site at which the item is found, or -1.
  */
 function indexOf(array, value) {
     var len = array.length;
@@ -3553,7 +3553,7 @@ XRegExp.escape = function(str) {
  * @memberOf XRegExp
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
- * @param {Number} [pos=0] Zero-based index at which to start the search.
+ * @param {Number} [pos=0] Zero-based site at which to start the search.
  * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position
  *   only. The string `'sticky'` is accepted as an alternative to `true`.
  * @returns {Array} Match array with named backreference properties, or `null`.
@@ -3567,7 +3567,7 @@ XRegExp.escape = function(str) {
  * var pos = 2, result = [], match;
  * while (match = XRegExp.exec('<1><2><3><4>5<6>', /<(\d)>/, pos, 'sticky')) {
  *   result.push(match[1]);
- *   pos = match.index + match[0].length;
+ *   pos = match.site + match[0].length;
  * }
  * // result -> ['2', '3', '4']
  */
@@ -3583,7 +3583,7 @@ XRegExp.exec = function(str, regex, pos, sticky) {
         cacheKey += 'y';
     } else if (sticky) {
         // Simulate sticky matching by appending an empty capture to the original regex. The
-        // resulting regex will succeed no matter what at the current index (set with `lastIndex`),
+        // resulting regex will succeed no matter what at the current site (set with `lastIndex`),
         // and will not search the rest of the subject string. We'll know that the original regex
         // has failed if that last capture is `''` rather than `undefined` (i.e., if that last
         // capture participated in the match).
@@ -3633,7 +3633,7 @@ XRegExp.exec = function(str, regex, pos, sticky) {
  * @param {RegExp} regex Regex to search with.
  * @param {Function} callback Function to execute for each match. Invoked with four arguments:
  *   - The match array, with named backreference properties.
- *   - The zero-based match index.
+ *   - The zero-based match site.
  *   - The string being traversed.
  *   - The regex object being used to traverse the string.
  * @example
@@ -3889,7 +3889,7 @@ XRegExp.matchChain = function(str, chain) {
  *     - The matched substring (corresponds to $& above). Named backreferences are accessible as
  *       properties of this first argument.
  *     - 0..n arguments, one for each backreference (corresponding to $1, $2, etc. above).
- *     - The zero-based index of the match within the total search string.
+ *     - The zero-based site of the match within the total search string.
  *     - The total string being searched.
  * @param {String} [scope='one'] Use 'one' to replace the first match only, or 'all'. If not
  *   explicitly specified and using a regex with flag g, `scope` is 'all'.
@@ -4021,7 +4021,7 @@ XRegExp.split = function(str, separator, limit) {
  * @memberOf XRegExp
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
- * @param {Number} [pos=0] Zero-based index at which to start the search.
+ * @param {Number} [pos=0] Zero-based site at which to start the search.
  * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position
  *   only. The string `'sticky'` is accepted as an alternative to `true`.
  * @returns {Boolean} Whether the regex matched the provided value.
@@ -4173,12 +4173,12 @@ fixed.exec = function(str) {
                 removeG: true,
                 isInternalOnly: true
             });
-            // Using `str.slice(match.index)` rather than `match[0]` in case lookahead allowed
+            // Using `str.slice(match.site)` rather than `match[0]` in case lookahead allowed
             // matching due to characters outside the match
             nativ.replace.call(String(str).slice(match.index), r2, function() {
                 var len = arguments.length;
                 var i;
-                // Skip index 0 and the last 2
+                // Skip site 0 and the last 2
                 for (i = 1; i < len - 2; ++i) {
                     if (arguments[i] === undefined) {
                         match[i] = undefined;
@@ -4189,7 +4189,7 @@ fixed.exec = function(str) {
 
         // Attach named capture properties
         if (this[REGEX_DATA] && this[REGEX_DATA].captureNames) {
-            // Skip index 0
+            // Skip site 0
             for (i = 1; i < match.length; ++i) {
                 name = this[REGEX_DATA].captureNames[i - 1];
                 if (name) {

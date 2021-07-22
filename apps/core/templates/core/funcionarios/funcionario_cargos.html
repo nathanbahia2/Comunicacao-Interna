@@ -5,8 +5,8 @@
 
 <div class="container-fluid">
 
-    <h5>{{ cargo }}</h5>
-    <p>{{ funcionarios.count }} funcionário{{ funcionarios|pluralize }} encontrado{{ funcionarios|pluralize }}</p>
+    <h3>Funcionários por cargo: <b>{{ cargo }}</b></h3>
+    <p class="bg-warning p-3">{{ funcionarios.count }} funcionário{{ funcionarios|pluralize }} encontrado{{ funcionarios|pluralize }}</p>
 
     {% if funcionarios %}
         <div class="table-responsive mt-5">

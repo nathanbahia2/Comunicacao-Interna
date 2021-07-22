@@ -6,6 +6,7 @@
     <head>
         <title>{% block title %}Casa dos Cereais{% endblock title %}</title>
         <meta charset="urf-8" />
+        <meta name="theme-color" content="#343a40">
         <meta name="viewport" content="width=device-width minimum-scale=1 maximum-scale=1"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -129,7 +130,8 @@
                             <a class="dropdown-item" href="{% url 'usuarios:usuarios' %}">Usuários</a>
                             <a class="dropdown-item" href="{% url 'core:emails' %}">E-mails</a>
                         {% endif %}
-                        <a class="dropdown-item" href="{% url 'relatorios:index' %}">Relatórios</a>
+                        <a class="dropdown-item" href="{% url 'relatorios:site' %}">Relatórios</a>
+                        <a class="dropdown-item" href="{% url 'core:sobre' %}">Sobre</a>
                     </div>
                 </li>
             </ul>
@@ -150,8 +152,8 @@
             {% endif %}
             <div class="text-light text-center text-sm-right mt-3 mt-sm-0">
                 <b>{{ request.user.get_full_name|upper }}</b>
-                <a class='btn btn-sm ml-2' href="{% url 'usuarios:logout' %}" data-toggle="tooltip" title="Sair do sistema">
-                    <i class="fas fa-power-off text-warning"></i>
+                <a class='btn btn-sm btn-danger ml-2' href="{% url 'usuarios:logout' %}" data-toggle="tooltip" title="Sair do sistema">
+                    <i class="fas fa-power-off"></i> Sair
                 </a>
             </div>
         </div>

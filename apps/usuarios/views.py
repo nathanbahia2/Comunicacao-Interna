@@ -21,7 +21,7 @@ def usuarios(request, pk=None):
     usuario = request.user.perfil.latest('id')
 
     if not usuario.tipo == '2':
-        return redirect('core:index')
+        return redirect('core:site')
 
     instance = None
     perfil = None

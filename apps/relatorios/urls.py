@@ -4,6 +4,6 @@ from apps.relatorios import views
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.index, name='site'),
     path('create', views.gerar, name='gerar'),
 ]

@@ -50,7 +50,7 @@
             </div>
             <div class="col-12 my-3 px-0">
                 {% if instance %}
-                    <a href="{% url "entregas:entregadores" %}" type="reset" class="btn btn-secondary">
+                    <a href="javascript:history.back()" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Cancelar
                     </a>
                 {% else %}
@@ -67,7 +67,7 @@
 
     {% if not instance %}
 
-        <p>{{ entregadores.count }} entregador{{ entregadores|pluralize }} cadastrado{{ entregadores|pluralize }}</p>
+        <p class="bg-warning p-3">{{ entregadores.count }} entregador{{ entregadores|pluralize }} encontrado{{ entregadores|pluralize }}</p>
 
         {% if entregadores %}
             <div class="table-responsive mt-5">
@@ -104,10 +104,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-            {% else %}
-            <div class="alert alert-warning mt-5">
-                Nenhum entregador cadastrado até o momento
             </div>
         {% endif %}
     {% endif %}

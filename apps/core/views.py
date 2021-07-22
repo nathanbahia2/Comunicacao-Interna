@@ -14,7 +14,7 @@ from apps.usuarios.models import Perfil
 
 @login_required
 def index(request):
-    return render(request, 'core/index/index.html')
+    return render(request, 'core/site/index.html')
 
 
 @login_required
@@ -72,7 +72,7 @@ def cargos(request, pk=None):
 def filiais(request):
     usuario = request.user.perfil.latest('id')
     if not usuario.tipo == '2':
-        return redirect('core:index')
+        return redirect('core:site')
 
     form = forms.FilialForm()
 
@@ -610,3 +610,8 @@ def emails(request, pk=None):
         'instance': instance
     }
     return render(request, 'core/emails/emails.html', context)
+
+
+@login_required
+def sobre(request):
+    return render(request, 'core/site/sobre.html')

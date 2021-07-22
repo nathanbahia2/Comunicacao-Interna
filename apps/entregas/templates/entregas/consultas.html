@@ -57,7 +57,7 @@
         </div>
     </form>
 
-    <p>{{ entregas.count }} entrega{{ entregas|pluralize }} cadastradas{{ entregas|pluralize }}</p>
+    <p class="bg-warning p-3">{{ entregas.count }} entrega{{ entregas|pluralize }} encontrada{{ entregas|pluralize }}</p>
 
     {% if entregas %}
 
@@ -103,14 +103,6 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
-    {% else %}
-        <div class="alert alert-warning mt-5">
-            {% if consulta %}
-                Nenhuma entrega encontrada
-            {% else %}
-                Nenhuma entrega cadastrada até o momento
-            {% endif %}
         </div>
     {% endif %}
 </div>

@@ -5,9 +5,8 @@
 
 <div class="container-fluid">
 
-
-    <h5>{{ funcionario }}</h5>
-    <p>{{ elogios.count }} elogio{{ elogios|pluralize }} encontrado{{ elogios|pluralize }}</p>
+    <h3>Elogios: <b>{{ funcionario }}</b></h3>
+    <p class="bg-warning p-3 mt-5">{{ elogios.count }} elogio{{ elogios|pluralize }} encontrado{{ elogios|pluralize }}</p>
 
     {% if elogios %}
         <div class="table-responsive mt-5">

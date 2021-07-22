@@ -58,7 +58,7 @@
             {% endif %}
             <div class="col-12 my-3 px-0">
                 {% if instance %}
-                    <a href="{% url "usuarios:usuarios" %}" type="reset" class="btn btn-secondary">
+                    <a href="javascript:history.back()" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Cancelar
                     </a>
                 {% else %}
@@ -75,7 +75,7 @@
 
     {% if not instance %}
 
-        <p>{{ usuarios.count }} usuário{{ usuarios|pluralize }} cadastro{{ usuarios|pluralize }}</p>
+        <p class="bg-warning p-3">{{ usuarios.count }} usuário{{ usuarios|pluralize }} encontrado{{ usuarios|pluralize }}</p>
 
         {% if usuarios %}
             <div class="table-responsive mt-5">
@@ -113,10 +113,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-            {% else %}
-            <div class="alert alert-warning mt-5">
-                Nenhum usuário cadastrado até o momento
             </div>
         {% endif %}
     {% endif %}

@@ -57,7 +57,7 @@
         </div>
     </form>
 
-    <p>{{ ocorrencias.count }} ocorrência{{ ocorrencias|pluralize }} cadastrada{{ ocorrencias|pluralize }}</p>
+    <p class="bg-warning p-3 mt-5">{{ ocorrencias.count }} ocorrência{{ ocorrencias|pluralize }} encontrada{{ ocorrencias|pluralize }}</p>
 
     {% if ocorrencias %}
 
@@ -102,14 +102,6 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
-    {% else %}
-        <div class="alert alert-warning mt-5">
-            {% if consulta %}
-                Nenhuma ocorrência encontrada
-            {% else %}
-                Nenhuma ocorrência cadastrada até o momento
-            {% endif %}
         </div>
     {% endif %}
 </div>

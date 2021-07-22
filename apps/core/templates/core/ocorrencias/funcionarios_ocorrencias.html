@@ -5,9 +5,8 @@
 
 <div class="container-fluid">
 
-
-    <h5>{{ funcionario }}</h5>
-    <p>{{ ocorrencias.count }} ocorrência{{ ocorrencias|pluralize }} encontrada{{ ocorrencias|pluralize }}</p>
+    <h3>Ocorrências: <b>{{ funcionario }}</b></h3>
+    <p class="bg-warning p-3 mt-5">{{ ocorrencias.count }} ocorrência{{ ocorrencias|pluralize }} encontrada{{ ocorrencias|pluralize }}</p>
 
     {% if ocorrencias %}
         <div class="table-responsive mt-5">

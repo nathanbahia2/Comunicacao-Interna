@@ -5,6 +5,7 @@ from apps.core import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('sobre', views.sobre, name='sobre'),
 
     path('cargos', views.cargos, name='cargos'),
     path('cargos/edit/<int:pk>/', views.cargos, name='edit_cargos'),
