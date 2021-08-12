@@ -8,7 +8,7 @@ from apps.relatorios import forms
 
 @login_required
 def index(request):
-    usuario = request.user.perfil
+    usuario = request.user.perfil.latest('id')
 
     funcionarios_count = models.Funcionario.objects.filter(filial=usuario.filial, ativo=True).count()
     elogios_count = models.Elogio.objects.filter(funcionario__filial=usuario.filial, ativo=True).count()
@@ -29,7 +29,7 @@ def index(request):
 
 @login_required
 def gerar(request):
-    usuario = request.user.perfil
+    usuario = request.user.perfil.latest('id')
     form = forms.RelatorioForm(data=request.POST)
 
     data_inicial = None
@@ -79,7 +79,5 @@ def gerar(request):
         'tipo': tipo,
         'query': query
     }
-
-    print(context)
 
     return render(request, 'relatorios/resultado.html', context)

@@ -281,7 +281,7 @@ def consulta_ocorrencias(request):
         'ativo': True
     }
 
-    query = models.Ocorrencia.objects.filter(**filtros).order_by('funcionario')
+    query = models.Ocorrencia.objects.filter(**filtros).order_by('-data')
 
     form = forms.ConsultaOcorrenciaForm(
         usuario=usuario,
@@ -309,7 +309,7 @@ def consulta_ocorrencias(request):
             filtros['motivo'] = motivo
 
         consulta = True
-        query = models.Ocorrencia.objects.filter(**filtros)
+        query = models.Ocorrencia.objects.filter(**filtros).order_by('-data')
 
     context = {
         'form': form,
